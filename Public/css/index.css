@@ -1,0 +1,222 @@
+.top{
+	height: 100px;
+	background-color: #FFF;
+}
+.top1{
+	height: 100px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+}
+.logo {
+	height: 60px;
+	float: left;
+	margin-top: 20px;
+	margin-right: 0px;
+	margin-bottom: 20px;
+	margin-left: 0px;
+}
+.slogan {
+	float: left;
+	height: 60px;
+	width: 396px;
+	margin-top: 20px;
+	margin-right: 0px;
+	margin-bottom: 20px;
+	margin-left: 12px;
+	line-height: 160%;
+	color: #069;
+	padding-left: 12px;
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #ccc;
+	font-family: ËÎÌå,Arial,Helvetica,sans-serif;
+	font-size: 12px;
+}
+.tel {
+	float: left;
+	height: 68px;
+	width: 250px;
+	margin-right: 0px;
+	margin-left: 0px;
+	margin-top:20px
+}
+.font{
+	float:left;
+	font-family: FangSong;
+	font-size: 20px;
+}
+.hot_theme {
+width: 666px;
+height: 367px;
+float: left;
+}
+.hot_movie {
+float: right;
+width: 305px;
+height: 367px;
+}
+#div_li{
+width:100%;
+margin:auto;
+height:50px;
+margin-top:10px;
+list-style-type:none
+}
+#div_li > li{	
+float:left;
+width:120px;
+height:50px;
+}
+#div_li li:first-child{
+	margin-left:10px
+}
+#div_li li > div{	
+ cursor:pointer;
+ height:50px;
+ width:80px;
+ margin-left:8px;
+ text-align: center;
+ letter-spacing:2px;
+ 
+ /* Gecko browsers */
+-moz-border-radius-topleft: 12px;
+-moz-border-radius-topright: 12px;
+
+ 
+/* Webkit browsers */
+-webkit-border-top-left-radius: 12px;
+-webkit-border-top-right-radius: 12px;
+
+ 
+/* W3C syntax */
+border-top-left-radius: 12px;
+border-top-right-radius: 12px;
+
+}
+#div_li li div>i{	
+font-size: 25px;
+line-height: normal;
+color: rgb(149, 149, 147);
+}
+#div_li li div>font{
+	font-family: 'Microsoft yahei', Î¢ÈíÑÅºÚ, Tahoma, Verdana, Arial, sans-serif,simhei,simsun;
+	font-size: 10px;
+	font-weight: bolder;
+	color:RGB(149,149,147);
+	line-height: 2.5;	  
+}
+.div_submenu{
+	width:990px;
+	height:28px;
+	background:RGB(149,149,147);
+	display:none;
+    margin-top:-5px;
+}
+font_f{
+	margin-left:20px;
+	margin-right:20px;
+	line-height: 2;
+}
+font_f:hover{
+	color:white;
+	cursor:pointer;
+}
+.font_f{
+	font-family: 'Microsoft yahei', Î¢ÈíÑÅºÚ, Tahoma, Verdana, Arial, sans-serif,simhei,simsun;
+	text-align: center;
+	font-size: larger;
+}
+.enviro{
+	width:990px;
+	height:30px;
+	background:rgb(214,214,214);
+	margin-top:5px;
+	text-align:left;
+	font-family: 'Microsoft yahei', Î¢ÈíÑÅºÚ, Tahoma, Verdana, Arial, sans-serif,simhei,simsun;
+	font-size: larger;
+	letter-spacing: 2px;
+	line-height: 2;
+	text-indent: 10px;
+}
+#div_bottom{
+	width:990px;
+	margin:auto;
+	height:150px;
+	margin-top:10px;
+	margin-bottom:30px;
+	
+}
+#div_bottom >div{
+	width:173px;
+	height:140px;
+	float:left;
+	margin-left:20px
+}
+#div_bottom div > img{
+	width:173px;
+	height:100px;
+}
+#know{
+width:620px;
+height:210px;
+float:left;
+margin-left:5px;
+}
+#know .panel-head{
+	height:30px;
+}
+#know li{
+	height:23px
+}
+#know .list-group li, .list-link a {
+	padding: 0px
+}
+.banner .pager-prev {
+	font-size:48px
+}
+.banner .pager-next {
+	font-size:48px
+}
+
+
+
+
+.pages {
+	width: 100.5%;
+	text-align: center;
+	padding: 10px 0;
+	clear: both;
+}
+
+.pages span,.pages a,.pages b, .pages span.current {
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0 2px;
+}
+
+.pages span font {
+	color: #f00;
+	font-size: 12px;
+}
+
+.pages a,.pages b, .pages span.current {
+	border: 1px solid #0099CC;
+	background: #fff;
+	padding: 2px 6px;
+	text-decoration: none
+}
+
+.pages span {
+	padding-right: 10px
+}
+
+.pages b,.pages a:hover, .pages span.current {
+	background: #0099CC;
+	color: #fff;
+}
+
+
+#div_li a:hover{
+	color: #fff;
+}

@@ -15,9 +15,9 @@ return array(
 	'DB_TYPE'=>'mysql',
 	'DB_HOST'=>'localhost',
 		
-	'DB_NAME'=>'sqldyyx',
-	'DB_USER'=>'dyyx',
-	'DB_PWD'=>'txq123',
+	'DB_NAME'=>'blkq',
+	'DB_USER'=>'aoplee',
+	'DB_PWD'=>'aoplee',
 		
 	'DB_PROT'=>'3306',
 	'DB_PREFIX'=>'blkq_',

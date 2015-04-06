@@ -124,7 +124,7 @@ if (empty($_FILES) === false) {
 	}
 	@chmod($file_path, 0644);
 	$file_url = $save_url . $new_file_name;
-	$url='http://'.$_SERVER['SERVER_NAME'].'/Public/'.$dir_name.'/'.$ymd.'/'.$new_file_name;
+	$url='http://'.$_SERVER['SERVER_NAME'].'/blkq/Public/'.$dir_name.'/'.$ymd.'/'.$new_file_name;
 
 	header('Content-type: text/html; charset=UTF-8');
 	$json = new Services_JSON();

@@ -133,6 +133,18 @@ class MessageAction extends Action
 			$id = I ( "param.id" );
 			$info = selectRow('order', $id);
 			//dump($info);
+			$dottime = $info['dottime'];
+			$arr = explode(',',$dottime);
+			//dump($arr);
+			$time11 = floor($arr[0]/4)+8;
+			$time12 = ($arr[0]%4)*15;
+			$time21 = floor($arr[1]/4)+8;
+			$time22 = ($arr[1]%4)*15;
+			$this->assign('time11',$time11);
+			$this->assign('time12',$time12);
+			$this->assign('time21',$time21);
+			$this->assign('time22',$time22);
+			//dump($time12.'-'.$time22);
 			$this->assign('info',$info);
 
 			/*get all doctor info*/
@@ -150,7 +162,30 @@ class MessageAction extends Action
 			$data['name']=I('param.name');
 			$data['tel']=I('param.tel');
 			$data['order_time']=I('param.order_time');
-			$data['order_time2']=I('param.order_time2');
+
+			/* order time 2 is alter */
+			$time11 = I('param.time11');
+			$time12 = I('param.time12');
+			$time21 = I('param.time21');
+			$time22 = I('param.time22');
+			if ($time12*15==0)
+			{
+				$time12='00';
+			}else
+			{
+				$time12=$time12*15;
+			}
+			//dump($time22*15);
+			if ($time22*15==0)
+			{
+				$time22='00';
+			}else {
+				$time22=$time22*15;
+			}
+			//dump($time22);
+			$data['order_time2']=$time11.":".$time12."-".$time21.":".$time22;
+			$data['dottime'] = (($time11-8)*4 + $time12).','. (($time21-8)*4 + $time22);
+
 			$data['desc']=I('param.desc');
 			$data['doctor_id']=I('param.doctor_id');
 			$data['yuyue_type']=I('param.yuyue_type');
@@ -172,12 +207,22 @@ class MessageAction extends Action
 	/* send weixin to doctor */
 	public function hit_weixin()
 	{
+		if (!is_login()) {
+			$this->error("还没有登陆哦~~",U("index/login"));
+		}
+
 		/* get order id first */
 		$id = I ( "param.id" );
 
+
+
 		/*发送微信*/
 		$thedata = selectRow('order', $id);
-		if (null != $thedata['doctor_id']) {
+		if (null != $thedata['doctor_name']) {
+			/* updaye is_reply to order*/
+			$data['is_weixin']=1;
+			$ok = updateRow('order', $id, $data) ;
+
 			/*给对应的weixin_id发送微信*/
 			$weixin_id = selectAttr('doctor', 'weixin_id', $thedata['doctor_id']);
 			$content =urlencode("【网站预约消息】\n\n预约号:".$thedata['id']."\n患者姓名:".$thedata['name']."\n年龄段:".$thedata['age']."\n性别:".$thedata['sex']."\n电话:".$thedata['tel']."\n预约时间:".$thedata['order_time']."-".$thedata['order_time2']."\n预约类别:".$thedata['yuyue_type']."\n描述:".$thedata['desc']."\n\n请您注意");
@@ -185,9 +230,31 @@ class MessageAction extends Action
 			send_weixin($id, $content);
 			$this->success("send weixin success");
 		}else {
-			$this->error("没有指定医师哦~~");
+			$this->error("没有指定医师哦，请编辑指定医师~~");
 		}
-		
+
+	}
+
+	/* mark reply replyed to the order */
+	public function hit_reply()
+	{
+		if (!is_login()) {
+			$this->error("还没有登陆哦~~",U("index/login"));
+		}
+
+		/* get order id first */
+		$id = I ( "param.id" );
+
+		/* updaye is_reply to order*/
+		$data['is_reply']=1;
+		$ok = updateRow('order', $id, $data) ;
+		if ($ok)
+		{
+			$this->success ( "处理成功" );
+		} else
+		{
+			$this->error ( "处理失败" );
+		}
 	}
 
 	/* to add yuyue by admin */
@@ -214,7 +281,31 @@ class MessageAction extends Action
 			$data['age']=I('param.age');
 			$data['tel']=I('param.tel');
 			$data['order_time']=I('param.order_time');
-			$data['order_time2']=I('param.order_time2');
+			//$data['order_time2']=I('param.order_time2');
+
+			/* order time 2 is alter */
+			$time11 = I('param.time11');
+			$time12 = I('param.time12');
+			$time21 = I('param.time21');
+			$time22 = I('param.time22');
+			if ($time12*15==0)
+			{
+				$time12='00';
+			}else
+			{
+				$time12=$time12*15;
+			}
+			//dump($time22*15);
+			if ($time22*15==0)
+			{
+				$time22='00';
+			}else {
+				$time22=$time22*15;
+			}
+			//dump($time22);
+			$data['order_time2']=$time11.":".$time12."-".$time21.":".$time22;
+			$data['dottime'] = (($time11-8)*4 + $time12).','. (($time21-8)*4 + $time22);
+
 			$data['desc']=I('param.desc');
 			$data['doctor_id']=I('param.doctor_id');
 			$data['yuyue_type']=I('param.yuyue_type');
@@ -227,10 +318,10 @@ class MessageAction extends Action
 
 			if ($ok)
 			{
-				$this->success ( "添加成功" );
+				$this->success ( "添加成功",U('Message/index_yuyue') );
 			} else
 			{
-				$this->error ( "添加失败" );
+				$this->error ( "添加失败",U('Message/index_yuyue') );
 			}
 		}
 	}

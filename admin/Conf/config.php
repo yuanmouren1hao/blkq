@@ -6,7 +6,7 @@ return array(
 
 	'URL_MODEL'          => '1', //URL模式
 	'SESSION_AUTO_START' => true, //是否开启session
-	'URL_PATHINFO_DEPR'=>'-', //更改PATHINFO参数分隔符
+	'URL_PATHINFO_DEPR'=>'/', //更改PATHINFO参数分隔符
 		
 	'TMPL_ACTION_ERROR' => 'Public:error',//默认错误跳转对应的模板文件
 	'TMPL_ACTION_SUCCESS' => 'Public:success',//默认成功跳转对应的模板文件
@@ -15,9 +15,9 @@ return array(
 	'DB_TYPE'=>'mysql',
 	'DB_HOST'=>'localhost',
 		
-	'DB_NAME'=>'sqldyyx',
-	'DB_USER'=>'dyyx',
-	'DB_PWD'=>'txq123',
+	'DB_NAME'=>'blkq',
+	'DB_USER'=>'aoplee',
+	'DB_PWD'=>'aoplee',
 		
 	'DB_PROT'=>'3306',
 	'DB_PREFIX'=>'blkq_',

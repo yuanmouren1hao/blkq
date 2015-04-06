@@ -101,8 +101,8 @@
 					</div>
 					<div class="field">
 						<select name="order_time2" class="input input-auto" size="">
-							<option selected>上午</option>
-							<option>下午</option>
+							<option value="1" selected>上午</option>
+							<option value="2">下午</option>
 						</select>
 					</div>
 				</div>

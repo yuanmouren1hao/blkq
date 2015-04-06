@@ -80,7 +80,7 @@ class IndexAction extends Action
 		if ($id)
 		{
 			setInc ( 'page', $id, 'read_num', 1 );
-				
+
 			$info = selectRow ( 'page_catelog', $id );
 			if ($info ['father'] == '医院动态' or $info ['father'] == '口腔视频')
 			{
@@ -173,26 +173,51 @@ class IndexAction extends Action
 			$data ['sex'] = I ( 'param.sex' );
 			$data ['tel'] = I ( 'param.tel' );
 			$data ['order_time'] = I ( 'param.order_time' );
-			$data ['order_time2'] = I ( 'param.order_time2' );
+
+			/* alter time2 */
+			$time2 = I ( 'param.order_time2' );
+			if ($time2==1){
+				$data ['order_time2'] = '8:00-12:00';
+				/* add dottime*/
+				$data['dottime'] = '0,16';
+			}
+			else if ($time2==2)
+			{
+				$data ['order_time2'] = '12:00-17:00';
+				/* add dottime*/
+				$data['dottime'] = '16,39';
+			}
+
+
 			$data ['desc'] = I ( 'param.desc' );
 			$data ['ip'] = get_current_ip ();
 			$data ['createtime'] = get_current_time ();
 			$data['yuyue_type'] = I('param.yuyue_type');
 			$data['doctor_id'] = I('param.doctor_id');
 			$data['doctor_name'] = I('param.doctor_name');
-				
+
 			// dump($data);
 			$ok = M ( "Order" )->add ( $data );
+			//dump($ok);
 			if ($ok)
 			{
 				// success
 				$this->success ( "您的预约号是：" . $ok .'    ,我们将会尽快安排助手联系您。'   ,'index');
 				$content=$data ['name']."-".$data ['sex'].'在网站上进行了预约。预约时间是：  '.$data ['order_time'].' '.$data ['order_time2'].'。  预约号：'.$ok.'   预约的联系方式是：'.$data ['tel'].'   症状描述是：'.$data ['desc'];
 				send_email(mc_option('hos_mail'), '有人预约', $content);
-				
+
 				/* do send weixin to admin */
-				$weixin_content="【网站有人预约】\n\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n预约号：".$ok."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n请您尽快处理";
+				$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n<a href='".mc_option('site_url')."/wap.php/index-dafu.html?id=".$ok."&weixin_id=".mc_option('admin_weixin_id')."'>请点击处理</a>";
 				send_weixin(mc_option('admin_weixin_id'), urlencode($weixin_content));
+
+				if(mc_option('admin_weixin_id1')){
+					$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n <a href='".mc_option('site_url')."/wap.php/index-dafu.html?id=".$ok."&weixin_id=".mc_option('admin_weixin_id1')."'>请点击处理</a>";
+					send_weixin(mc_option('admin_weixin_id1'), urlencode($weixin_content));
+				}
+				if(mc_option('admin_weixin_id2')){
+					$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n<a href='".mc_option('site_url')."/wap.php/index-dafu.html?id=".$ok."&weixin_id=".mc_option('admin_weixin_id1')."'>请点击处理</a>";
+					send_weixin(mc_option('admin_weixin_id2'), urlencode($weixin_content));
+				}
 			} else
 			{
 				$this->error ( "预约失败~~" );
@@ -210,9 +235,52 @@ class IndexAction extends Action
 				$this->assign('info',$info);
 				$this->display ();
 			}
-				
+
 		}
 
+	}
+
+	public function dafu()
+	{
+		$id = $_REQUEST ['id'];
+		$weixin_id = $_REQUEST['weixin_id'];
+
+		if (null == $id || null == $weixin_id)
+		{
+			$this->show("参数错误.");
+		}
+
+		//查询预约数据库
+		$info = selectRow('order', $id);
+		if (0 == $info['answer_id'] || null == $info['answer_id'])
+		{
+			//no one dafu already
+			$data['answer_time'] = get_current_time();
+			$data['answer_id'] = $weixin_id;
+			if ($weixin_id == mc_option('admin_weixin_id'))
+			{
+				$data['answer_name'] = mc_option('weixin_name');
+			}
+			else if($weixin_id == mc_option('admin_weixin_id1'))
+			{
+				$data['answer_name'] = mc_option('weixin_name1');
+			}
+			else if($weixin_id == mc_option('admin_weixin_id2'))
+			{
+				$data['answer_name'] = mc_option('weixin_name2');
+			}
+			else {
+				$this->show("weixin wrong");
+			}
+			/* update the order*/
+			$ok = updateRow('order', $id, $data);
+		}
+		/* already dafu by others */
+		/* 取出更新人员的id */
+		$info = selectRow('order', $id);
+		$msg = "处理人员：".$info['answer_name']."\n处理时间：".$info['answer_time'];
+		$this->assign('info',$msg);
+		$this->display ();
 	}
 
 	public function liucheng()
@@ -253,7 +321,7 @@ class IndexAction extends Action
 		$this->display (); // 输出模板
 	}
 
-	
+
 	public function appoint()
 	{
 		$info = selectList($tname='doctor_catelog');

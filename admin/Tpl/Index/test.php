@@ -1,14 +1,17 @@
 <include file="public/head" />
 
-<volist name='list' id='vo' empty='没有东西'>
 
-{$vo.id}
-{$vo.table_name}
 
-</volist>
 
-<?php echo MODULE_NAME;?>
-<?php echo ACTION_NAME;?>
-{$MODULE_NAME} <br>{$CONTROLLER_NAME}<br>{$ACTION_NAME}
+
+<div class="pages">
+	<span>共<font>1678</font>条评论
+	</span><b>1</b><a href="">2</a><a href="">3</a><a href="">4</a><a
+		href="">5</a>...<a href="">168</a><a href="">下一页>></a>
+</div>
+
+
+
+
 
 <include file='public/foot' />

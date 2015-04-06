@@ -116,12 +116,12 @@ function cut_mixstr($str, $length, $start = FALSE, $dot = '...')
 	{
 		return false;
 	}
-	
+
 	$strlen = strlen ( $str );
 	$content = '';
 	$sing = 0;
 	$count = 0;
-	
+
 	if ($length > $strlen)
 	{
 		$length = $strlen;
@@ -130,7 +130,7 @@ function cut_mixstr($str, $length, $start = FALSE, $dot = '...')
 	{
 		return false;
 	}
-	
+
 	while ( $length != ($count - $start) )
 	{
 		if (ord ( $str [$sing] ) > 0xa0)
@@ -158,13 +158,13 @@ function cut_mixstr($str, $length, $start = FALSE, $dot = '...')
 /**
  * 获取PDF的页数
  *
- * @param $path pdf文件路径        	
+ * @param $path pdf文件路径
  * @return int 文件页数
  * @author fuhao.li
  */
 function getPDFPageTotal($path)
 {
-	
+
 	// echo "getPageTotal pdf";
 	// 打开文件
 	if (! $fp = @fopen ( $path, "r" ))
@@ -182,7 +182,7 @@ function getPDFPageTotal($path)
 			{
 				preg_match ( '/[0-9]+/', $matches [0], $matches2 );
 				if ($max < $matches2 [0])
-					$max = $matches2 [0];
+				$max = $matches2 [0];
 			}
 		}
 		fclose ( $fp );
@@ -242,8 +242,8 @@ function get_table_name($id)
 /**
  * 检查是否登录是否存在
  *
- * @param unknown $name        	
- * @param unknown $password        	
+ * @param unknown $name
+ * @param unknown $password
  * @return Ambigous <mixed, boolean, NULL, multitype:, unknown, string>
  */
 function check_user($name, $password)
@@ -258,7 +258,7 @@ function check_user($name, $password)
 /**
  * 检测用户是否登录
  *
- * @param        	
+ * @param
  *
  *
  *
@@ -298,7 +298,7 @@ function send_email($to_email, $title, $content)
 	$MAIL_SMTP = mc_option ( 'stmp_host' );
 	$MAIL_LOGINNAME = mc_option ( 'stmp_username' );
 	$MAIL_PASSWORD = mc_option ( 'stmp_password' );
-	
+
 	Vendor ( 'PHPMailer.phpmailer' );
 	$mail = new PHPMailer (); // 设置PHPMailer使用SMTP服务器发送Email
 	$mail->IsSMTP (); // 设置邮件的字符编码，若不指定，则为'UTF-8'
@@ -384,11 +384,11 @@ function rand_string($len = 6, $type = '', $addChars = '')
 /**
  * 动态获取数据库信息
  *
- * @param $tname 表名        	
- * @param $where 搜索条件        	
+ * @param $tname 表名
+ * @param $where 搜索条件
  * @param $order 排序条件
  *        	如："id desc";
- * @param $count 取前几条数据        	
+ * @param $count 取前几条数据
  * @author fuhao.li
  */
 function selectList($tname, $where = "", $order = "", $count = 0)
@@ -414,8 +414,8 @@ function selectList($tname, $where = "", $order = "", $count = 0)
 /**
  * 动态获取数据库一条记录
  *
- * @param 表名 $name        	
- * @param 记录的id $id        	
+ * @param 表名 $name
+ * @param 记录的id $id
  * @return Ambigous <mixed, boolean, NULL, multitype:, unknown, string>
  */
 function selectRow($name, $id)
@@ -429,9 +429,9 @@ function selectRow($name, $id)
 /**
  * 动态回去一条记录的属性
  *
- * @param 表名 $name        	
- * @param 获取的属性名 $attr        	
- * @param 属性id $id        	
+ * @param 表名 $name
+ * @param 获取的属性名 $attr
+ * @param 属性id $id
  * @return Ambigous <mixed, NULL, multitype:Ambigous <unknown, string> unknown , multitype:>
  */
 function selectAttr($name, $attr, $id)
@@ -446,9 +446,9 @@ function selectAttr($name, $attr, $id)
 /**
  * 获取一个表的某条记录的某个属性
  *
- * @param unknown $name        	
- * @param unknown $attr        	
- * @param unknown $where        	
+ * @param unknown $name
+ * @param unknown $attr
+ * @param unknown $where
  * @return Ambigous <mixed, NULL, multitype:Ambigous <unknown, string> unknown , multitype:>
  */
 function getAttr($name, $attr, $where)
@@ -463,9 +463,9 @@ function getAttr($name, $attr, $where)
 /**
  * 更新一条记录
  *
- * @param 表名 $tname        	
- * @param id名 $id        	
- * @param 更新的数据 $data，更新的数据中必须含有主键        	
+ * @param 表名 $tname
+ * @param id名 $id
+ * @param 更新的数据 $data，更新的数据中必须含有主键
  * @return Ambigous <boolean, false, number>
  */
 function updateRow($tname, $id, $data)
@@ -480,10 +480,10 @@ function updateRow($tname, $id, $data)
 /**
  * 更新一行数据，可以不含有主键
  *
- * @param 表名 $tname        	
- * @param 条件 $where        	
- * @param 字段名 $field        	
- * @param 字段值 $value        	
+ * @param 表名 $tname
+ * @param 条件 $where
+ * @param 字段名 $field
+ * @param 字段值 $value
  * @return Ambigous <boolean, unknown, false, number>
  */
 function updateField($tname, $where, $field, $value)
@@ -498,10 +498,10 @@ function updateField($tname, $where, $field, $value)
 /**
  * 字段值增长
  *
- * @param 表名 $tname        	
- * @param number $id        	
- * @param 字段名 $field        	
- * @param number $step        	
+ * @param 表名 $tname
+ * @param number $id
+ * @param 字段名 $field
+ * @param number $step
  * @return Ambigous <boolean, unknown, false, number>
  */
 function setInc($tname, $id, $field, $step = 1)
@@ -516,10 +516,10 @@ function setInc($tname, $id, $field, $step = 1)
 /**
  * 字段值减少
  *
- * @param 表名 $tname        	
- * @param number $id        	
- * @param 字段名 $field        	
- * @param number $step        	
+ * @param 表名 $tname
+ * @param number $id
+ * @param 字段名 $field
+ * @param number $step
  * @return Ambigous <boolean, unknown, false, number>
  */
 function setDec($tname, $id, $field, $step = 1)
@@ -534,8 +534,8 @@ function setDec($tname, $id, $field, $step = 1)
 /**
  * 添加一条记录
  *
- * @param 表名 $tname        	
- * @param 数据 $data        	
+ * @param 表名 $tname
+ * @param 数据 $data
  * @return Ambigous <mixed, boolean, string, unknown, false, number>
  */
 function insertRow($tname, $data)
@@ -550,8 +550,8 @@ function insertRow($tname, $data)
 /**
  * 删除多条记录
  *
- * @param 表名 $tname        	
- * @param 条件 $where        	
+ * @param 表名 $tname
+ * @param 条件 $where
  * @return Ambigous <mixed, boolean, false, number>
  */
 function deleteList($tname, $where)
@@ -566,8 +566,8 @@ function deleteList($tname, $where)
 /**
  * 删除一条记录
  *
- * @param 表名 $tname        	
- * @param id值 $id        	
+ * @param 表名 $tname
+ * @param id值 $id
  * @return Ambigous <mixed, boolean, false, number>
  */
 function deleteRow($tname, $id)
@@ -600,7 +600,7 @@ function list_sort_by($list, $field, $sortby = 'asc')
 	{
 		$refer = $resultSet = array ();
 		foreach ( $list as $i => $data )
-			$refer [$i] = &$data [$field];
+		$refer [$i] = &$data [$field];
 		switch ($sortby)
 		{
 			case 'asc' : // 正向排序
@@ -614,7 +614,7 @@ function list_sort_by($list, $field, $sortby = 'asc')
 				break;
 		}
 		foreach ( $refer as $key => $val )
-			$resultSet [] = &$list [$key];
+		$resultSet [] = &$list [$key];
 		return $resultSet;
 	}
 	return false;
@@ -624,7 +624,7 @@ function list_sort_by($list, $field, $sortby = 'asc')
 /**
  * 时间戳格式化
  *
- * @param int $time        	
+ * @param int $time
  * @return string 完整的时间显示
  * @author fuhao.li
  */
@@ -719,7 +719,7 @@ function mc_page()
 /**
  * 获取留言和预约消息的个数
  *
- * @param string $type        	
+ * @param string $type
  */
 function get_xinxi($type = "liuyan")
 {
@@ -751,7 +751,7 @@ function send_post($url, $post_data)
 					'header' => 'Content-type:application/x-www-form-urlencoded',
 					'content' => $postdata,
 					'timeout' => 15 * 60 
-			) 
+	)
 	);
 	$context = stream_context_create ( $options );
 	$result = file_get_contents ( $url, false, $context );
@@ -767,7 +767,7 @@ function send_post($url, $post_data)
  */
 function send_get($url)
 {
-	$html = file_get_contents($url);  
+	$html = file_get_contents($url);
 	return  $html;
 }
 
@@ -782,5 +782,43 @@ function send_weixin($weixin_id, $content)
 	$url = 'http://1.weixinblkq.sinaapp.com/4/send_mes.php?id='.$weixin_id.'&content='.$content;
 	$result = send_get($url);
 	return $result;
+}
+
+
+/**
+ * 导出数据为excel表格
+ *@param $data    一个二维数组,结构如同从数据库查出来的数组
+ *@param $title   excel的第一行标题,一个数组,如果为空则没有标题
+ *@param $filename 下载的文件名
+ *@examlpe
+ $stu = M ('User');
+ $arr = $stu -> select();
+ exportexcel($arr,array('id','账户','密码','昵称'),'文件名!');
+ */
+function exportexcel($data=array(),$title=array(),$filename='report'){
+	header("Content-type:application/octet-stream");
+	header("Accept-Ranges:bytes");
+	header("Content-type:application/vnd.ms-excel");
+	header("Content-Disposition:attachment;filename=".$filename.".xls");
+	header("Pragma: no-cache");
+	header("Expires: 0");
+	//导出xls 开始
+	if (!empty($title)){
+		foreach ($title as $k => $v) {
+			$title[$k]=iconv("UTF-8", "GB2312",$v);
+		}
+		$title= implode("\t", $title);
+		echo "$title\n";
+	}
+	if (!empty($data)){
+		foreach($data as $key=>$val){
+			foreach ($val as $ck => $cv) {
+				$data[$key][$ck]=iconv("UTF-8", "GB2312", $cv);
+			}
+			$data[$key]=implode("\t", $data[$key]);
+
+		}
+		echo implode("\n",$data);
+	}
 }
 

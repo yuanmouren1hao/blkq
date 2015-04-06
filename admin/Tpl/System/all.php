@@ -26,7 +26,7 @@
 				placeholder="描述~" />
 		</div>
 	</div>
-	
+
 	<div class="form-group">
 		<div class="label">
 			<label for="username">分页显示数</label>
@@ -37,7 +37,7 @@
 				placeholder="描述~" />
 		</div>
 	</div>
-	
+
 	<div class="form-group">
 		<div class="label">
 			<label for="username">提示页面时间</label>
@@ -48,7 +48,7 @@
 				placeholder="描述~" />
 		</div>
 	</div>
-	
+
 	<div class="form-group">
 		<div class="label">
 			<label for="username">copyright</label>
@@ -59,7 +59,7 @@
 				placeholder="" />
 		</div>
 	</div>
-	
+
 	<div class="form-group">
 		<div class="label">
 			<label for="username">百度统计代码</label>
@@ -70,16 +70,76 @@
 				placeholder="" />
 		</div>
 	</div>
-	
-	<div class="form-group">
+
+	<div class="form-group  ">
+		<div class="label">
+			<label>助手姓名</label>
+		</div>
+		<div class="field">
+			<input type="text" class="input" id="weixin_name" name="weixin_name"
+				value="<?php echo mc_option('weixin_name')?>" size="20"
+				placeholder="" />
+		</div>
+	</div>
+	<div class="form-group  ">
 		<div class="label">
 			<label for="username">助手微信id</label>
 		</div>
 		<div class="field">
-			<input type="text" class="input" id="admin_weixin_id" name="admin_weixin_id"
-				value="<?php echo mc_option('admin_weixin_id')?>" size="50"
+			<input type="text" class="input" id="admin_weixin_id"
+				name="admin_weixin_id"
+				value="<?php echo mc_option('admin_weixin_id')?>" size="20"
 				placeholder="" />
 		</div>
+
+	</div>
+
+	<div class="form-group">
+		<div class="label">
+			<label>助手1姓名</label>
+		</div>
+		<div class="field">
+			<input type="text" class="input" id="weixin_name1"
+				name="weixin_name1" value="<?php echo mc_option('weixin_name1')?>"
+				size="20" placeholder="" />
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="label">
+			<label for="username">助手1微信id</label>
+		</div>
+		<div class="field">
+			<input type="text" class="input" id="admin_weixin_id1"
+				name="admin_weixin_id1"
+				value="<?php echo mc_option('admin_weixin_id1')?>" size="20"
+				placeholder="" />
+		</div>
+
+	</div>
+
+
+
+	<div class="form-group">
+		<div class="label">
+			<label>助手2姓名</label>
+		</div>
+		<div class="field">
+			<input type="text" class="input" id="weixin_name2"
+				name="weixin_name2" value="<?php echo mc_option('weixin_name2')?>"
+				size="20" placeholder="" />
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="label">
+			<label>助手2微信id</label>
+		</div>
+		<div class="field">
+			<input type="text" class="input" id="admin_weixin_id2"
+				name="admin_weixin_id2"
+				value="<?php echo mc_option('admin_weixin_id2')?>" size="20"
+				placeholder="" />
+		</div>
+
 	</div>
 
 	<input type="hidden" name="tag" value="tag" />
@@ -87,10 +147,14 @@
 		<button class="button" type="submit">保存</button>
 	</div>
 </form>
-<script charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
-<script charset="utf-8" src="__PUBLIC__/kindeditor/zh_CN.js"></script>
-<script charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
-<script charset="utf-8" src="__PUBLIC__/kindeditor/zh_CN.js"></script>
+<script
+	charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
+<script
+	charset="utf-8" src="__PUBLIC__/kindeditor/zh_CN.js"></script>
+<script
+	charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
+<script
+	charset="utf-8" src="__PUBLIC__/kindeditor/zh_CN.js"></script>
 <script>
 		var editor;
 		KindEditor.ready(function(K) {

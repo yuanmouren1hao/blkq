@@ -259,6 +259,11 @@ class SystemAction extends Action
 			$ok = mc_update_option ( 'baidu_tongji', I ( 'param.baidu_tongji' ) );
 			$ok = mc_update_option ( 'foot_copyright', I ( 'param.foot_copyright' ) );
 			$ok = mc_update_option ( 'admin_weixin_id', I ( 'param.admin_weixin_id' ) );
+			$ok = mc_update_option ( 'admin_weixin_id1', I ( 'param.admin_weixin_id1' ) );
+			$ok = mc_update_option ( 'admin_weixin_id2', I ( 'param.admin_weixin_id2' ) );
+			$ok = mc_update_option ( 'weixin_name', I ( 'param.weixin_name' ) );
+			$ok = mc_update_option ( 'weixin_name1', I ( 'param.weixin_name1' ) );
+			$ok = mc_update_option ( 'weixin_name2', I ( 'param.weixin_name2' ) );
 			if ($ok)
 			{
 				$this->success ( "更新成功" );

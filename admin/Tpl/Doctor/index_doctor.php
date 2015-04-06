@@ -41,9 +41,11 @@
 					<td>{$vo.mail}</td>
 					<td>{$vo.weixin_id}</td>
 					<td>{$vo.updatetime}</td>
-					<td><a class="button border-blue button-little" href="<?php echo U('Doctor/edit_doctor')?>?id={$vo.id}">修改</a> <a
-						class="button border-yellow button-little" href="<?php echo U('Doctor/delete_doctor')?>?id={$vo.id}"
-						onclick="{if(confirm('确认删除?')){return true;}return false;}">删除</a></td>
+					<td>
+						<a class="button border-blue button-little" href="<?php echo U('Doctor/edit_doctor')?>?id={$vo.id}">修改</a>
+						<a class="button border-yellow button-little" href="<?php echo U('Doctor/delete_doctor')?>?id={$vo.id}"	onclick="{if(confirm('确认删除?')){return true;}return false;}">删除</a>
+						<a class="button bg-sub button-little" href="<?php echo U('doctor/init_secret')?>?id={$vo.id}">设置初始密码</a>
+					</td>
 				</tr>
 			</volist>
 

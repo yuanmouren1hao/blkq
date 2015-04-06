@@ -15,11 +15,13 @@ class DoctorAction extends Action
 			{
 				$this->error ( "验证码错误！");
 			}
-				
+
 			/* get doctor info */
+			$password = md5($password);
+			//dump($password);
 			$model = M ( "doctor" );
-			$doctor = $model->where ( "tel = '" . $name . "' and weixin_id= '" . $password . "' " )->limit ( 1 )->find ();
-				
+			$doctor = $model->where ( "tel = '" . $name . "' and password= '" . $password . "' " )->limit ( 1 )->find ();
+
 			if ($doctor)
 			{
 				$_SESSION ['DOCTOR'] = $doctor;
@@ -33,6 +35,8 @@ class DoctorAction extends Action
 			$this->display ();
 		}
 	}
+
+
 
 	/*
 	 * doctor退出登陆操作
@@ -65,17 +69,176 @@ class DoctorAction extends Action
 		$Page = new Page ( $count, mc_option ( 'page_num' ) ); // 实例化分页类 传入总记录数和每页显示的记录数
 		$Page->setConfig ( 'theme', mc_page () );
 		$show = $Page->show (); // 分页显示输出, 进行分页数据查询 注意limit方法的参数要使用Page类的属性
-		$list = $obj->where('doctor_id='.$id)->order ( 'createtime desc' )->limit ( $Page->firstRow . ',' . $Page->listRows )->select ();
+		$list = $obj->where('doctor_id='.$id)->order ( 'order_time desc ,dottime asc' )->limit ( $Page->firstRow . ',' . $Page->listRows )->select ();
 		$this->assign ( 'list', $list ); // 赋值数据集
 		$this->assign ( 'page_now', $show ); // 赋值分页输出
 		$this->assign ( 'count', $count );
 		$this->display (); // 输出模板
 	}
+	
+	public function queryUser()
+	{
+		$name = $_REQUEST['name'];
+		$tel = $_REQUEST['tel'];
+		
+		//echo ($name.$tel);
+		if($name==null || $tel ==null)
+		{
+			$data['code']=0;
+			$data['msg']='param set wrong';
+			$this->ajaxReturn($data);
+		}
+		
+		$info = selectList('order',"name ='".$name."' and tel = '".$tel."' ",'createtime',0);
+		$this->ajaxReturn($info);
+		
+	}
+
+	/* yuanzhang login page*/
+	public function yuanzhang_login()
+	{
+		$tag = $_REQUEST ['tag'];
+		if ($tag)
+		{
+			$name = $_REQUEST ['name'];
+			$password = $_REQUEST ['password'];
+			if ($_SESSION ['verify'] != md5 ( $_POST ['verify'] ))
+			{
+				$this->error ( "验证码错误！");
+			}
+
+			/* get doctor info */
+			$password = md5($password);
+			if ($name==mc_option('yuanzhang_name') && $password==mc_option("yuanzhang_password")) {
+				$ok=1;
+			}
+
+			if ($ok)
+			{
+				$_SESSION ['BLKQ'] = mc_option("yuanzhang_name");
+				$this->success ( $name . "  登陆成功", U ( "doctor/yuanzhang_index" ) );
+			} else
+			{
+				$this->error ( "登录失败~~" );
+			}
+		} else
+		{
+			$this->display ();
+		}
+	}
+
+	public function yuanzhang_logout()
+	{
+		if (session ( 'BLKQ' ))
+		{
+			$_SESSION ['BLKQ'] = null;
+			$this->success ( "退出成功", U ( 'doctor/yuanzhang_login' ) );
+		} else
+		{
+			$this->error ( '额，未知错误~~', U ( 'doctor/yuanzhang_login' ) );
+		}
+	}
+
+	/* get yuanzhang index show pages */
+	public function yuanzhang_index()
+	{
+
+		if ($_SESSION['BLKQ']==null) {
+			$this->error("还没有登陆哦~~",U("doctor/yuanzhang_login"));
+		}
+		$tag = $_REQUEST['tag'];
+		if ($tag=='tag') {
+			$bengin_time = $_REQUEST['begin_time'];
+			$end_time = $_REQUEST['end_time'];
+			$name = $_REQUEST['name'];
+
+			if (null == $bengin_time) {
+				$bengin_time='2000-01-01';
+			}
+			if (null == $end_time) {
+				$end_time = '3000-12-31';
+			}
+
+			/* begin time is bigger than end time */
+			if ($bengin_time > $end_time) {
+				$this->error("您选择的开始时间大于结束时间");
+			}
+
+			//dump($bengin_time.$end_time);
+
+			$obj = M ( 'order' );
+			import ( 'ORG.Util.Page' ); // 导入分页类
+			if (null == $name) {
+				$count = $obj->where("order_time>='".$bengin_time."' and order_time <= '".$end_time."'")->count (); // 查询满足要求的总记录数
+			}else{
+				$count = $obj->where("order_time>='".$bengin_time."' and order_time <= '".$end_time."'and doctor_name like '%".$name."%'")->count (); // 查询满足要求的总记录数
+			}
+			//$count = $obj->where("order_time>='".$bengin_time."' and order_time <= '".$end_time."'")->count (); // 查询满足要求的总记录数
+			$Page = new Page ( $count, mc_option ( 'page_num' ) ); // 实例化分页类 传入总记录数和每页显示的记录数
+			$Page->setConfig ( 'theme', mc_page () );
+			$show = $Page->show (); // 分页显示输出, 进行分页数据查询 注意limit方法的参数要使用Page类的属性
+			if (null == $name) {
+				$list = M('order')->where("order_time>='".$bengin_time."' and order_time <= '".$end_time."'")->order ( 'doctor_id' )->limit ( $Page->firstRow . ',' . $Page->listRows )->select ();
+			}else{
+				$list = M('order')->where("order_time>='".$bengin_time."' and order_time <= '".$end_time."' and doctor_name like '%".$name."%'")->order ( 'doctor_id' )->limit ( $Page->firstRow . ',' . $Page->listRows )->select ();
+			}
+			$this->assign ( 'list', $list ); // 赋值数据集
+			$this->assign ( 'page_now', $show ); // 赋值分页输出
+			$this->assign ( 'count', $count );
+			$this->display (); // 输出模板
+
+
+		}
+		elseif ($tag=='export')
+		{
+			$bengin_time = $_REQUEST['begin_time'];
+			$end_time = $_REQUEST['end_time'];
+			$name = $_REQUEST['name'];
+
+			if (null == $bengin_time) {
+				$bengin_time='2000-01-01';
+			}
+			if (null == $end_time) {
+				$end_time = '3000-12-31';
+			}
+
+			/* begin time is bigger than end time */
+			if ($bengin_time > $end_time) {
+				$this->error("您选择的开始时间大于结束时间");
+			}
+			//dump($end_time);
+
+			if (null == $name) {
+				$list = M('order')->where("order_time>='".$bengin_time."' and order_time <= '".$end_time."'")->field("id,doctor_name,yuyue_type,order_time,order_time2,name,sex,age,tel,is_chuli,desc")->order ( 'doctor_id' )->select ();
+			}else{
+				$list = M('order')->where("order_time>='".$bengin_time."' and order_time <= '".$end_time."' and doctor_name like '%".$name."%'")->field("id,doctor_name,yuyue_type,order_time,order_time2,name,sex,age,tel,is_chuli,desc")->order ( 'doctor_id' )->select ();
+			}
+			$title = array('预约号','医师姓名','预约类型','预约时间','预约时间段','患者姓名','患者性别','患者年龄','患者电话','处理状态','描述');
+			$filename = get_current_time();
+			exportexcel($data=$list, $title, $filename);
+		}
+		else {
+
+			$obj = M ( 'order' );
+			import ( 'ORG.Util.Page' ); // 导入分页类
+			$count = $obj->count (); // 查询满足要求的总记录数
+			$Page = new Page ( $count, mc_option ( 'page_num' ) ); // 实例化分页类 传入总记录数和每页显示的记录数
+			$Page->setConfig ( 'theme', mc_page () );
+			$show = $Page->show (); // 分页显示输出, 进行分页数据查询 注意limit方法的参数要使用Page类的属性
+			$list = $obj->limit ( $Page->firstRow . ',' . $Page->listRows )->order ( 'doctor_id' )->field("id,doctor_name,yuyue_type,order_time,order_time2,name,sex,age,tel,desc,is_chuli,answer_name")->select ();
+			$this->assign ( 'list', $list ); // 赋值数据集
+			$this->assign ( 'page_now', $show ); // 赋值分页输出
+			$this->assign ( 'count', $count );
+			$this->display (); // 输出模板
+
+		}
+	}
+
+
 
 
 	public function index_doctor()
 	{
-
 		if (! is_login ())
 		{
 			$this->error ( "还没有登陆哦~~", U ( "index/login" ) );
@@ -117,11 +280,12 @@ class DoctorAction extends Action
 			$data ['updatetime'] = get_current_time ();
 			$data ['catelog_id'] = I ( 'param.catelog_id' );
 			$data ['weixin_id'] = I ( 'param.weixin_id' );
+			$data ['password'] = md5('12345678');
 			$ok = insertRow ( 'doctor', $data );
 			// dump($data);
 			if ($ok)
 			{
-				$this->success ( "添加医师成功" );
+				$this->success ( "添加医师成功，医师初始密码为12345678，请尽快通知修改。" );
 			} else
 			{
 				$this->error ( "添加医师失败" );
@@ -132,7 +296,7 @@ class DoctorAction extends Action
 			$this->assign ( 'cate_list', $cate_list );
 			$this->display ();
 		}
-	
+
 	}
 
 	public function edit_doctor($id)
@@ -176,7 +340,7 @@ class DoctorAction extends Action
 			$this->assign ( 'info', $info );
 			$this->display ();
 		}
-	
+
 	}
 
 	public function delete_doctor($id)
@@ -195,9 +359,38 @@ class DoctorAction extends Action
 		{
 			$this->error ( "删除医师失败" );
 		}
-	
+
 	}
-	
+
+	/* set doctor init secret as 12345678*/
+	public function init_secret()
+	{
+		if (! is_login ())
+		{
+			$this->error ( "还没有登陆哦~~", U ( "index/login" ) );
+		}
+
+		/* get id */
+		$id = I ( "param.id" );
+		$old_secret = selectAttr('doctor', 'password', $id);
+		if($old_secret == md5('12345678'))
+		{
+			$this->success ( "操作成功" );
+		}
+		else {
+			$data['password'] = md5('12345678');
+			$ok = updateRow('doctor', $id, $data);
+
+			if ($ok)
+			{
+				$this->success ( "操作成功" );
+			} else
+			{
+				$this->error ( "操作失败" );
+			}
+		}
+	}
+
 	// -----------------------------------huanjing------------------------//
 	public function index_huanjing()
 	{
@@ -226,7 +419,7 @@ class DoctorAction extends Action
 		{
 			$this->error ( "还没有登陆哦~~", U ( "index/login" ) );
 		}
-		
+
 		$tag = $_REQUEST ['tag'];
 		// dump($tag);
 		if ($tag)
@@ -253,7 +446,7 @@ class DoctorAction extends Action
 			$this->assign ( 'cate_list', $cate_list );
 			$this->display ();
 		}
-	
+
 	}
 
 	public function edit_huanjing()
@@ -268,12 +461,12 @@ class DoctorAction extends Action
 		{
 			$this->error ( "发生了一点小错误~~" );
 		}
-		
+
 		$tag = $_REQUEST ['tag'];
 		// dump($tag);
 		if ($tag)
 		{
-			
+
 			$data ['image'] = I ( 'param.image' );
 			$data ['desc'] = I ( 'param.desc' );
 			$data ['content'] = I ( 'param.content' );
@@ -296,13 +489,13 @@ class DoctorAction extends Action
 			$this->assign ( 'info', $info );
 			$this->display ();
 		}
-	
+
 	}
 
-	
+
 	public function edit_shebei()
 	{
-	
+
 		if (! is_login ())
 		{
 			$this->error ( "还没有登陆哦~~", U ( "index/login" ) );
@@ -312,12 +505,12 @@ class DoctorAction extends Action
 		{
 			$this->error ( "发生了一点小错误~~" );
 		}
-	
+
 		$tag = $_REQUEST ['tag'];
 		// dump($tag);
 		if ($tag)
 		{
-				
+
 			$data ['image'] = I ( 'param.image' );
 			$data ['desc'] = I ( 'param.desc' );
 			$data ['content'] = I ( 'param.content' );
@@ -340,10 +533,10 @@ class DoctorAction extends Action
 			$this->assign ( 'info', $info );
 			$this->display ();
 		}
-	
+
 	}
-	
-	
+
+
 	public function delete_huanjing($id)
 	{
 
@@ -360,9 +553,9 @@ class DoctorAction extends Action
 		{
 			$this->error ( "删除失败" );
 		}
-	
+
 	}
-	
+
 	// -------------------------------------------shebei-------------------------//
 	public function index_shebei()
 	{
@@ -417,7 +610,7 @@ class DoctorAction extends Action
 			$this->assign ( 'cate_list', $cate_list );
 			$this->display ();
 		}
-	
+
 	}
 
 	public function delete_shebei($id)
@@ -436,9 +629,9 @@ class DoctorAction extends Action
 		{
 			$this->error ( "删除失败" );
 		}
-	
+
 	}
-	
+
 	// -----------------------------------------------video------------------------//
 	public function index_video()
 	{
@@ -497,7 +690,7 @@ class DoctorAction extends Action
 		{
 			$this->display ();
 		}
-	
+
 	}
 
 	public function delete_video($id)
@@ -516,7 +709,7 @@ class DoctorAction extends Action
 		{
 			$this->error ( "删除失败" );
 		}
-	
+
 	}
 
 }

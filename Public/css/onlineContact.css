@@ -1,0 +1,138 @@
+#iconDiv1 {
+	display: none;
+}
+
+.oc_bg {
+	background: url(../img/onlineContact_bg.png) no-repeat
+}
+
+.btn {
+	display: inline-block;
+	text-decoration: none;
+	cursor: pointer
+}
+
+#big_C {
+	position: fixed;
+	_position: absolute;
+	width: 89px;
+	height: 301px;
+	right: 0px;
+	top: 200px
+}
+
+#big_C .btn1 {
+	position: absolute;
+	width: 19px;
+	height: 19px;
+	top: 70px;
+	right: 0px;
+	background-position: -176px -83px
+}
+
+#big_C .btn2 {
+	position: absolute;
+	width: 63px;
+	height: 63px;
+	top: 118px;
+	left: 13px;
+	background-position: -103px -13px
+}
+
+#big_C .btn2:hover {
+	background-position: -171px -13px
+}
+
+#big_C .btn3 {
+	position: absolute;
+	width: 68px;
+	height: 24px;
+	top: 188px;
+	left: 10px;
+	background-position: -101px -202px
+}
+
+#big_C .btn3:hover {
+	background-position: -101px -174px
+}
+
+#big_C .btn4 {
+	position: absolute;
+	width: 68px;
+	height: 24px;
+	left: 10px;
+	top: 220px;
+	background-position: -173px -202px
+}
+
+#big_C .btn4:hover {
+	background-position: -173px -174px
+}
+
+#big_C .btn5 {
+	position: absolute;
+	width: 56px;
+	height: 26px;
+	top: 262px;
+	left: 17px;
+	background-position: -178px -235px
+}
+
+#big_C .btn5:hover {
+	background-position: -107px -235px
+}
+
+#big_C .btn6 {
+	display: none;
+	position: absolute;
+	width: 29px;
+	height: 85px;
+	top: 140px;
+	left: -25px;
+	background-position: -135px -84px
+}
+
+#big_C .btn6:hover {
+	background-position: -101px -84px
+}
+
+#small_C {
+	position: fixed;
+	_position: absolute;
+	width: 28px;
+	height: 91px;
+	right: 1px;
+	top: 300px;
+	background-position: -250px -174px
+}
+
+#small_C .btn1 {
+	display: none;
+	position: absolute;
+	width: 28px;
+	height: 28px;
+	left: 0px;
+	bottom: -28px;
+	background-position: -207px -108px
+}
+
+#small_C .btn1:hover {
+	background-position: -175px -108px
+}
+
+#small_C .stb {
+	position: absolute;
+	width: 28px;
+	height: 91px;
+	right: 1px;
+	top: 0px
+}
+
+#big_C #wx {
+	display: none;
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	top: 220px;
+	left: -150px;
+}

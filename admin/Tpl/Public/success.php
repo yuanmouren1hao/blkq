@@ -1,10 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<title><?php echo mc_option('site_name');?></title>
+<meta name="keywords" content="<?php echo mc_option('keyword');?>" />
+<meta name="description"
+	content="<?php echo mc_option('description');?>" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="__ROOT__/icon.ico" rel="shortcut icon">
+<link rel="stylesheet" href="__PUBLIC__/pintuer/pintuer.css">
+<link rel="stylesheet" href="__PUBLIC__/pintuer/admin/admin.css">
+
+</head>
+<body>
+	<div class="container">
 <?php
     if(C('LAYOUT_ON')) {
         echo '{__NOLAYOUT__}';
     }
 ?>
-<?php $waitSecond=mc_option('alter_time');?>
-<include file="Public/head" />
+<?php $waitSecond=3;?>
+
 <div class="container padding-large-top margin-large-top padding-large-bottom margin-large-bottom">
 	<div class="system-message well success text-center">
 		<i class="glyphicon icon-check-square-o text-large text-green"></i>
@@ -27,4 +45,12 @@ var interval = setInterval(function(){
 }, 1000);
 })();
 </script>
-<include file="Public/foot" />
+
+
+</div>
+    <script src="__PUBLIC__/pintuer/jquery.js"></script>
+    <script src="__PUBLIC__/pintuer/pintuer.js"></script>
+    <script src="__PUBLIC__/pintuer/respond.js"></script>
+    <script src="__PUBLIC__/pintuer/admin/admin.js"></script>   
+</body>
+</html>

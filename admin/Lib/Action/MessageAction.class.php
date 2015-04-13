@@ -116,6 +116,7 @@ class MessageAction extends Action
 		if ($ok)
 		{
 			$this->success ( "处理成功" );
+			//$this->index_yuyue();
 		} else
 		{
 			$this->error ( "处理失败" );

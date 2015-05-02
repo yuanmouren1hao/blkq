@@ -1,4 +1,4 @@
-//桌面图标
+﻿//桌面图标
 var appbtnTemp = template(
 	'<li class="appbtn" type="<%=type%>" id="<%=id%>" realid="<%=realid%>" style="top:<%=top%>px;left:<%=left%>px">'+
 		'<div><img src="<%=imgsrc%>" title="<%=title%>" alt="<%=title%>"></div>'+
@@ -212,25 +212,7 @@ var editPappDialogTemp = template(
 		'<% } %>'+
 	'</table>'
 );
-//应用评分
-var starDialogTemp = template(
-	'<div id="star">'+
-		'<div class="grade-box">'+
-			'<div class="star-num"><%=point%></div>'+
-			'<div class="star-box">'+
-				'<div>打分：</div>'+
-				'<i style="width:<%=realpoint%>%"></i>'+
-				'<ul>'+
-					'<li class="grade-1" num="1"><a href="javascript:;"><em>很不好用</em></a></li>'+
-					'<li class="grade-2" num="2"><a href="javascript:;"><em>体验一般般</em></a></li>'+
-					'<li class="grade-3" num="3"><a href="javascript:;"><em>比较好用</em></a></li>'+
-					'<li class="grade-4" num="4"><a href="javascript:;"><em>很好用</em></a></li>'+
-					'<li class="grade-5" num="5"><a href="javascript:;"><em>棒极了，推荐</em></a></li>'+
-				'</ul>'+
-			'</div>'+
-		'</div>'+
-	'</div>'
-);
+
 //上传文件窗口
 var uploadFileDialogTemp = template(
 	'<div id="uploadfilebtnbox">'+
@@ -254,7 +236,7 @@ var helpTemp = template(
 		'<a href="javascript:;" class="close" title="关闭新手帮助">×</a>'+
 		'<div id="step1" class="step" step="1" style="position:relative;left:50%;top:50%;margin-left:-160px;margin-top:-60px;width:280px;height:100px">'+
 			'<p style="text-align:center">'+
-				'<span class="h2">欢迎使用HoorayOS</span>'+
+				'<span class="h2">欢迎使用北仑口腔医院办公OA</span>'+
 				'<br>下面我会简单介绍下如何使用，以便你快速上手<br>'+
 				'<a href="javascript:;" class="next">下一步</a>'+
 			'</p>'+

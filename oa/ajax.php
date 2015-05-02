@@ -217,7 +217,7 @@
 							$app['id'] = $rs['tbid'];
 							$app['name'] = $rs['name'];
 							$app['icon'] = $rs['icon'];
-							$app['url'] = $rs['url'];
+							$app['url'] = $rs['url'].'?sid='.$_SESSION['member']['id'];
 							$app['width'] = $rs['width'];
 							$app['height'] = $rs['height'];
 							$app['isresize'] = $rs['isresize'];
@@ -233,7 +233,7 @@
 							$app['id'] = $rs['tbid'];
 							$app['name'] = $rs['name'];
 							$app['icon'] = $rs['icon'];
-							$app['url'] = $rs['url'];
+							$app['url'] = $rs['url'].'?sid='.$_SESSION['member']['id'];
 							$app['width'] = $rs['width'];
 							$app['height'] = $rs['height'];
 							$app['isresize'] = $rs['isresize'];

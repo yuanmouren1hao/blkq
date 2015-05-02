@@ -4,6 +4,7 @@
 	require_once('inc/smarty.php');
 	
 	$ac = $_REQUEST['ac'];
+	
 	switch($ac){
 		case 'ajaxGetList':
 			$mytype = $db->select(0, 1, 'tb_member', 'type', 'and tbid='.$_SESSION['member']['id']);
@@ -12,16 +13,27 @@
 				$sqlwhere[] = 'tbid in('.implode(',', $myapplist).')';
 			}else if($search_1 != 0){
 				if($search_1 == 1 && $mytype['type'] == 1){
-					$sqlwhere[] = 'kindid = '.$search_1;
+					/* 当查询系统的时候 看自己的permission是否有这个id */
+					/* select the permission */
+					$permission_user = $db->select(0, 1, 'tb_member', 'permission_id', 'and tbid='.$_SESSION['member']['id']);
+					$permission = $db->select(0, 1, 'tb_permission', 'apps_id', 'and tbid='.$permission_user[0]);
+					/* use new where*/
+					$sqlwhere[] = 'tbid in ('.$permission[0].') and kindid = '.$search_1;
 				}else{
 					$sqlwhere[] = 'kindid = '.$search_1;
 				}
 			}else if($search_1 == 0 && $mytype['type'] == 0){
 				$sqlwhere[] = 'kindid != 1';
+			}else if($search_1 == 0 && $mytype['type'] == 1){
+				/* show all apps here */
+				$permission_user = $db->select(0, 1, 'tb_member', 'permission_id', 'and tbid='.$_SESSION['member']['id']);
+					$permission = $db->select(0, 1, 'tb_permission', 'apps_id', 'and tbid='.$permission_user[0]);
+				$sqlwhere[] = 'kindid != 1 or tbid in ('.$permission[0].')';
 			}
 			if($search_3 != ''){
 				$sqlwhere[] = 'name like "%'.$search_3.'%"';
 			}
+			
 			switch($search_2){
 				case '1':
 					$orderby = 'dt desc';
@@ -46,7 +58,7 @@
 					echo '-1<{|*|}>';
 				}
 				foreach($rs as $v){
-					echo '<li><a href="javascript:;"><img src="../../'.$v['icon'].'"></a><a href="javascript:;"><span class="app-name">'.$v['name'].'</span></a><span class="app-desc">'.$v['remark'].'</span><span class="star-box"><i style="width:'.($v['starnum']*20).'%;"></i></span><span class="star-num">'.floor($v['starnum']).'</span><span class="app-stat">'.$v['usecount'].' 人正在使用</span><a href="javascript:;" app_id="'.$v['tbid'].'" app_type="'.$v['type'].'" class="';
+					echo '<li><a href="javascript:;"><img src="../../'.$v['icon'].'"></a><a href="javascript:;"><span class="app-name">'.$v['name'].'</span></a><span class="app-desc">'.$v['remark'].'</span><a href="javascript:;" app_id="'.$v['tbid'].'" app_type="'.$v['type'].'" class="';
 					if($myapplist != ''){
 						if(in_array($v['tbid'], $myapplist)){
 							if($search_1 == -1){

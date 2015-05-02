@@ -5,13 +5,18 @@
 <title>时钟</title>
 </head>
 <body>
-{literal}
-<style type="text/css">
-canvas{position:absolute;top:0px;left:0px;}
+	{literal}
+	<style type="text/css">
+canvas {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
 </style>
-<canvas id="canvas" width="150" height="150" style="background:url(bg.png)"></canvas>
-<canvas id="p_canvas" width="150" height="150"></canvas>
-<script type="text/javascript">
+	<canvas id="canvas" width="150" height="150"
+		style="background: url(bg.png)"></canvas>
+	<canvas id="p_canvas" width="150" height="150"></canvas>
+	<script type="text/javascript">
 //获取绘图对象
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d'); 
@@ -102,6 +107,6 @@ drwePointer(2,h);
 }
 var p = new Pointer();
 </script>
-{/literal}
+	{/literal}
 </body>
 </html>

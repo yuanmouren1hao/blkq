@@ -18,7 +18,7 @@
 	<div class="logo"></div>
 	<div class="input">
 		<div class="log">
-			<div class="name"><input type="text" id="value_1" placeholder="用户名" name="value_1" tabindex="1"><a class="btn" href="javascript:;" style="position:absolute;right:-45px;color:#FFF;width:40px;height:30px;line-height:30px"></a></div>
+			<div class="name"><input type="text" id="value_1" placeholder="用户名" name="value_1" tabindex="1"><a class="btn" href="javascript:;" style="position:absolute;right:-45px;color:#FFF;width:40px;height:30px;line-height:30px">注册</a></div>
 			<div class="pwd"><input type="password" id="value_2" placeholder="密码" name="value_2" tabindex="2"><input type="button" class="submit" tabindex="3"><div class="check"></div></div>
 			<div class="tip"></div>
 		</div>

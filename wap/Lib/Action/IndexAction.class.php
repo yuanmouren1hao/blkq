@@ -212,19 +212,23 @@ class IndexAction extends Action
 		}
 	}
 
-
+	public function day_appoint(){
+		$obj = M ( 'doc' );
+		$sql = "select name,tbid from tb_member where permission_id = 1";
+		$list = $obj->query($sql);
+		$this->assign ( 'list', $list ); // 赋值数据集
+		$this->display();		
+	}
 
 	public function get_order_info($weixin_id=null, $datetime=null)
 	{
 		$zhushou_weixin = mc_option("admin_weixin_id");
 		$yuanzhang_weixin = mc_option("yuanzhang_weixin_id");
-		$zhushou_weixin1 = mc_option('admin_weixin_id1');
-		$zhushou_weixin2 = mc_option('admin_weixin_id2');
 		if (null ==$weixin_id ) {
 			$data['code']=0;
 			$data['msg']="param is not set right";
 			$this->ajaxReturn($data);
-		}else if($zhushou_weixin == $weixin_id || $yuanzhang_weixin == $weixin_id || $zhushou_weixin1 == $weixin_id || $zhushou_weixin2 == $weixin_id)
+		}else if($zhushou_weixin == $weixin_id || $yuanzhang_weixin == $weixin_id)
 		{
 			$list=selectList("order", "is_chuli =1 and order_time = '".$datetime."'", 'order_time desc, dottime asc',0);
 			$data['code']=1;
@@ -281,6 +285,52 @@ class IndexAction extends Action
 		}
 	}
 
+
+	public function get_doc_duty( $datetime=null,$doc_id = null)
+	{
+			$time1 = strtotime($datetime);
+			$time2 = strtotime("2015-01-01");
+			$days = ceil(($time1-$time2)/86400) - 1;
+			
+			$model = new Model();
+			if($doc_id){
+				//指定了某个医生
+				$sql = "select name,tbid from tb_member where tbid = " . $doc_id;
+			}else{
+				$sql = "select name,tbid from tb_member where permission_id = 1";
+			}
+			$list = $model->query($sql);
+			$sql1 = "SELECT * FROM `blkq_duty` where days = " . $days;
+			$duty = $model->query($sql1);	
+			for($i=0;$i<count($list);$i++){
+				$list[$i]['am'] = "";
+				$list[$i]['pm'] = "";
+			}		
+			for($i=0;$i<count($list);$i++){
+				foreach($duty as $dt){
+					if($list[$i]['tbid'] == $dt['mem_id']){
+						$list[$i]['am'] = $dt["moring"];
+						$list[$i]['pm'] = $dt["afternoon"];
+					}
+				}
+			}
+			
+			$this->ajaxReturn($list);
+	}
+	
+	public function get_duty_message( $datetime=null,$doc_id = null)
+	{
+		if($doc_id){
+			$sql = "select * from blkq_order where order_time = '". $datetime ."' and doctor_id = '" . $doc_id ."' and isconfirm = 1";
+		}else{
+			$sql = "select * from blkq_order where order_time = '". $datetime ."' and isconfirm = 1";
+		}
+		$model = new Model();
+		$list = $model->query($sql);
+		$this->ajaxReturn($list);
+	}
+	
+
 	public function  change_pass()
 	{
 		$tag = $_REQUEST['tag'];
@@ -289,33 +339,28 @@ class IndexAction extends Action
 			$tel = $_REQUEST['tel'];
 			$old_pass = $_REQUEST['old_pass'];
 			$new_pass = $_REQUEST['new_pass'];
-
+			$sid = $_REQUEST['sid'];
 			/* judge the old_pass is right? */
-			$doctor = M("doctor")->where("tel='".$tel."' and password='".md5($old_pass)."'")->find();
-			dump($tel.$new_pass.$old_pass);
-			if ($doctor==null) {
+			$obj = new Model();
+			//$doctor = M("tb_member")->where("tbid='".$sid."' and password='".sha1($old_pass)."'")->find();
+			$doctor = $obj->query("select * from tb_member where tbid = '".$sid."' and password = '".sha1($old_pass)."'");
+			if ($doctor[0]==null) {
 				/* wrong pass or wrong name */
 				$this->error("账号或密码错误");
 			}
 			else
 			{
 				/* update the pass */
-				$data['password']=md5($new_pass);
-				$ok = updateRow('doctor', $doctor['id'], $data);
-				if ($ok) {
-					$this->success("修改密码成功");
-				}
-				else {
-					$this->error("修改密码失败");
-				}
+				$data['password']=sha1($new_pass);
+				//$ok = updateRow('doctor', $doctor['id'], $data);				
+				$ok = $obj->query("update tb_member set password = '".$data['password']. "' where tbid = ".$sid);		
+				$this->success("修改密码成功");			
 			}
 
 		}elseif (null==$tag){
 
 			$this->display();
 		}
-
-
 	}
 
 	/**
@@ -346,49 +391,6 @@ class IndexAction extends Action
 			}
 		}
 	}
-
-
-	public function dafu()
-	{
-		$id = $_REQUEST ['id'];
-		$weixin_id = $_REQUEST['weixin_id'];
-
-		if (null == $id || null == $weixin_id)
-		{
-			$this->show("参数错误.");
-		}
-
-		//查询预约数据库
-		$info = selectRow('order', $id);
-		if (0 == $info['answer_id'] || null == $info['answer_id'])
-		{
-			//no one dafu already
-			$data['answer_time'] = get_current_time();
-			$data['answer_id'] = $weixin_id;
-			if ($weixin_id == mc_option('admin_weixin_id'))
-			{
-				$data['answer_name'] = mc_option('weixin_name');
-			}
-			else if($weixin_id == mc_option('admin_weixin_id1'))
-			{
-				$data['answer_name'] = mc_option('weixin_name1');
-			}
-			else if($weixin_id == mc_option('admin_weixin_id2'))
-			{
-				$data['answer_name'] = mc_option('weixin_name2');
-			}
-			else {
-				$this->show("weixin wrong");
-			}
-			/* update the order*/
-			$ok = updateRow('order', $id, $data);
-		}
-		/* already dafu by others */
-		/* 取出更新人员的id */
-		$info = selectRow('order', $id);
-		$msg = "处理人员：".$info['answer_name']."\n处理时间：".$info['answer_time'];
-		$this->assign('info',$msg);
-		$this->display ();
-	}
+	
 
 }

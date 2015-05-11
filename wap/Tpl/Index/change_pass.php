@@ -19,7 +19,7 @@
 
 <body>
 	<div class="container body">
-    	<img src="__PUBLIC__/img/suggest_head.png" width="100%"/>
+    	
     	<div class="p_10"> 
             <!-- 表单 -->
             <form method="post">
@@ -27,12 +27,6 @@
             
               <!-- 基础文档模型 -->
               <div id="tab1" class="tab-pane">
-                   <div class="form-item cf">
-                        <label class="item-label">手机号</label>
-                        <div class="controls">
-                          <input type="text" class="text input-medium" name="tel" id="tel">
-                         </div>
-                   </div>
                    <div class="form-item cf">
                         <label class="item-label">原密码</label>
                         <div class="controls">
@@ -64,10 +58,6 @@
 			$('.submit-btn').click(function(){
 				//$.Dialog.loading();//loading等待调用  loading完成$.Dialog.close();关闭loading
 				//$.Dialog.success();//成功调用 提示一秒后自动关闭
-				if($('#tel').val()!=undefined && $('#tel').val()==""){
-					$.Dialog.fail("请填写账号！");//成功调用 提示一秒后自动关闭
-					return false;
-				}
 				if($('#old_pass').val()!=undefined && $('#old_pass').val()==""){
 					$.Dialog.fail("请填写原密码");//成功调用 提示一秒后自动关闭
 					return false;
@@ -76,8 +66,8 @@
 					$.Dialog.fail("请填写新密码！");//成功调用 提示一秒后自动关闭
 					return false;
 				}
-				if($('#new_pass').val().length < 8){
-					$.Dialog.fail("新密码长度需要大于8个字符！");//成功调用 提示一秒后自动关闭
+				if($('#new_pass').val().length < 5){
+					$.Dialog.fail("新密码长度需要大于5个字符！");//成功调用 提示一秒后自动关闭
 					return false;
 				}
 				if($('#new_pass1').val()==""){

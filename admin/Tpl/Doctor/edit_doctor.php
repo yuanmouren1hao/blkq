@@ -1,6 +1,14 @@
-<include file="public/head" />
 
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="__ROOT__/icon.ico" rel="shortcut icon">
+<link rel="stylesheet" href="__PUBLIC__/pintuer/pintuer.css">
+<link rel="stylesheet" href="__PUBLIC__/pintuer/admin/admin.css">
 
+</head>
+<body>
+
+<div class="container margin-big padding-big">
 
 
 <form method="post" class="form-x" action="<?php echo U('Doctor/edit_doctor');?>">
@@ -22,7 +30,7 @@
 				<volist name='cate_list' id='vo'>
 				<option value='{$vo.id}'>{$vo.child}</option>
 				</volist>
-				<option value="{$info.catelog_id}>" selected  >{$info.child}</option>
+				<option value="{$info.catelog_id}" selected  >{$info.child}</option>
 			</select>
 		</div>
 	</div>
@@ -104,8 +112,9 @@
   </div>
   
   <input type="hidden" name="tag" value="tag" />
-  <input type="hidden" name="id" value="{$info.id}" />
-  <div class="form-button"><button class="button" type="submit">提交</button></div>
+  <input type="hidden" name="id" value="{$info.tbid}" />
+  <div class="form-button"><button class="button" type="submit">提交</button><a href="<?php  echo U('doctor/index_doctor') ?>" class="button margin-left" >返回</a></div>
+  
 </form>
 
 <script charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
@@ -148,4 +157,10 @@
         });
 </script>
 
-<include file='public/foot' />
+</div>
+    <script src="__PUBLIC__/pintuer/jquery.js"></script>
+    <script src="__PUBLIC__/pintuer/pintuer.js"></script>
+    <script src="__PUBLIC__/pintuer/respond.js"></script>
+    <script src="__PUBLIC__/pintuer/admin/admin.js"></script>   
+</body>
+</html>

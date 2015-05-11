@@ -18,16 +18,6 @@
 
 
 	<div class="panel admin-panel">
-
-		<div class="panel-head">
-			<strong>欢迎您，<span class="badge bg-sub">{$Think.session.BLKQ}</span>
-				，全部预约信息</strong> <span class="float-right"> <a
-				class="button button-little bg-main"
-				href="<?php echo mc_option('site_url')?>" target="_blank">前台首页</a> <a
-				class="button button-little bg-yellow"
-				href="<?php echo U("doctor/logout");?>">注销登录</a> </span>
-		</div>
-
 		<div class="panel-head">
 			<form method="get" class="form-x" name="form1">
 				<input name="tag" value="tag" type="hidden" /> <label>开始时间:</label>

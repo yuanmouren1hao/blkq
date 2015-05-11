@@ -39,8 +39,8 @@
 							<li><a href="<?php echo U('System/index')?>">系统设置</a></li>
 							<li><a href="<?php echo U('catelog/index')?>">栏目管理</a></li>
 							<li><a href="<?php echo U('Content/index')?>">内容管理</a></li>
-							<li><a href="<?php echo U('Doctor/index_doctor')?>">医师/环境/设备/视频</a></li>
-							<li><a href="<?php echo U('Message/index_liuyan')?>">留言/预约</a></li>
+							<li><a href="<?php echo U('Doctor/index_huanjing')?>">环境/设备/视频</a></li>
+							<li><a href="<?php echo U('Message/index_liuyan')?>">留言</a></li>
 							<li><a href="<?php echo U('Tongji/index')?>">统计管理</a></li>
 						</ul></li>
 					<li <?php if (MODULE_NAME=='System'): ?> class="active"
@@ -117,18 +117,9 @@
 								href="<?php echo U('Content/rublish')?>">回收站</a></li>
 						</ul></li>
 					<li <?php if (MODULE_NAME=='Doctor'): ?> class="active"
-						<?php endif;?>><a href="<?php echo U('Doctor/index_doctor')?>"
-						class="icon-user"> 医师/环境/设备/视频</a>
+						<?php endif;?>><a href="<?php echo U('Doctor/index_huanjing')?>"
+						class="icon-user">环境/设备/视频</a>
 						<ul>
-							<li
-								<?php if (MODULE_NAME=='Doctor' and ACTION_NAME=='add_doctor'): ?>
-								class="active" <?php endif;?>><a
-								href="<?php echo U('Doctor/add_doctor')?>">添加医师</a></li>
-							<li
-								<?php if (MODULE_NAME=='Doctor' and ACTION_NAME=='index_doctor'): ?>
-								class="active" <?php endif;?>><a
-								href="<?php echo U('Doctor/index_doctor')?>">所有医师</a></li>
-							<hr>
 							<li
 								<?php if (MODULE_NAME=='Doctor' and ACTION_NAME=='add_huanjing'): ?>
 								class="active" <?php endif;?>><a
@@ -158,16 +149,12 @@
 						</ul></li>
 					<li <?php if (MODULE_NAME=='Message'): ?> class="active"
 						<?php endif;?>><a href="<?php echo U('Message/index_liuyan')?>"
-						class="icon-comments"> 留言/预约</a>
+						class="icon-comments"> 留言</a>
 						<ul>
 							<li
 								<?php if (MODULE_NAME=='Message' and ACTION_NAME=='index_liuyan'): ?>
 								class="active" <?php endif;?>><a
 								href="<?php echo U('Message/index_liuyan')?>">留言列表</a></li>
-							<li
-								<?php if (MODULE_NAME=='Message' and ACTION_NAME=='index_yuyue'): ?>
-								class="active" <?php endif;?>><a
-								href="<?php echo U('Message/index_yuyue')?>">预约列表</a></li>
 						</ul></li>
 					<li <?php if (MODULE_NAME=='Tongji'): ?> class="active"
 						<?php endif;?>><a href="<?php echo U('Tongji/page')?>"

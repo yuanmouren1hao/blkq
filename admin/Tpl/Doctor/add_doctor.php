@@ -1,7 +1,23 @@
-<include file="public/head" />
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<title><?php echo mc_option('site_name');?></title>
+<meta name="keywords" content="<?php echo mc_option('keyword');?>" />
+<meta name="description"
+	content="<?php echo mc_option('description');?>" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="__ROOT__/icon.ico" rel="shortcut icon">
+<link rel="stylesheet" href="__PUBLIC__/pintuer/pintuer.css">
+<link rel="stylesheet" href="__PUBLIC__/pintuer/admin/admin.css">
 
+</head>
+<body>
 
-
+<div class="container">
+<div class="x8 x2-move margin-big">
 
 <form method="post" class="form-x" action="<?php echo U('Doctor/add_doctor');?>">
 
@@ -143,5 +159,11 @@
             
         });
 </script>
-
-<include file='public/foot' />
+</div>
+</div>
+    <script src="__PUBLIC__/pintuer/jquery.js"></script>
+    <script src="__PUBLIC__/pintuer/pintuer.js"></script>
+    <script src="__PUBLIC__/pintuer/respond.js"></script>
+    <script src="__PUBLIC__/pintuer/admin/admin.js"></script>   
+</body>
+</html>

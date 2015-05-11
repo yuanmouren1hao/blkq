@@ -123,6 +123,7 @@ class IndexAction extends Action
 
 	public function test()
 	{
+		$model =new Model();
 
 		$this->display ();
 	

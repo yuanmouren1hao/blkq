@@ -1,6 +1,22 @@
-<include file="public/head" />
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<title><?php echo mc_option('site_name');?></title>
+<meta name="keywords" content="<?php echo mc_option('keyword');?>" />
+<meta name="description"
+	content="<?php echo mc_option('description');?>" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="__ROOT__/icon.ico" rel="shortcut icon">
+<link rel="stylesheet" href="__PUBLIC__/pintuer/pintuer.css">
+<link rel="stylesheet" href="__PUBLIC__/pintuer/admin/admin.css">
 
+</head>
+<body>
 
+<div class="container">
 <form method="post">
 	<div class="panel admin-panel">
 		<div class="panel-head">
@@ -33,7 +49,7 @@
 					<td><input type="checkbox" name="id" value="1" /></td>
 					<td>{$vo.age}</td>
 					<td><img alt="{$vo.name}" src="{$vo.image}" width="100px" /></td>
-					<td><strong><a target="_blank" href="__ROOT__/index.php/doctor-doctor_detail.html?id={$vo.id}">{$vo.name}</a></strong></td>
+					<td><strong><a target="_blank" href="__ROOT__/index.php/doctor-doctor_detail.html?id={$vo.tbid}">{$vo.name}</a></strong></td>
 					<td>{$vo.child}</td>
 					<td>{$vo.sex}</td>
 					<td>{$vo.title}</td>
@@ -42,9 +58,9 @@
 					<td>{$vo.weixin_id}</td>
 					<td>{$vo.updatetime}</td>
 					<td>
-						<a class="button border-blue button-little" href="<?php echo U('Doctor/edit_doctor')?>?id={$vo.id}">修改</a>
-						<a class="button border-yellow button-little" href="<?php echo U('Doctor/delete_doctor')?>?id={$vo.id}"	onclick="{if(confirm('确认删除?')){return true;}return false;}">删除</a>
-						<a class="button bg-sub button-little" href="<?php echo U('doctor/init_secret')?>?id={$vo.id}">设置初始密码</a>
+						<a class="button border-blue button-little" href="<?php echo U('Doctor/edit_doctor')?>?id={$vo.tbid}">修改</a>
+						<a class="button border-yellow button-little" href="<?php echo U('Doctor/delete_doctor')?>?id={$vo.tbid}"	onclick="{if(confirm('确认删除?')){return true;}return false;}">删除</a>
+						<a class="button bg-sub button-little" href="<?php echo U('doctor/init_secret')?>?id={$vo.tbid}">设置初始密码</a>
 					</td>
 				</tr>
 			</volist>
@@ -56,5 +72,10 @@
 		
 	</div>
 </form>
-
-<include file='public/foot' />
+</div>
+    <script src="__PUBLIC__/pintuer/jquery.js"></script>
+    <script src="__PUBLIC__/pintuer/pintuer.js"></script>
+    <script src="__PUBLIC__/pintuer/respond.js"></script>
+    <script src="__PUBLIC__/pintuer/admin/admin.js"></script>   
+</body>
+</html>

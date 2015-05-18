@@ -99,7 +99,8 @@ class DoctorAction extends Action
 	{
 		$id=$_REQUEST['id'];
 		if($id){
-			$info = selectRow('doctor_catelog', $id);
+			$m = M ( 'doctor_catelog' );
+			$info = $m->where ( 'tbid=' . $id )->find ();
 			$content=stripslashes($info['content']);
 			$info['content']=html_entity_decode($content);
 			$this->assign('info',$info);

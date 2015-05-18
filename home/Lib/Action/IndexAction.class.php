@@ -99,6 +99,34 @@ class IndexAction extends Action
 
 	}
 
+public function statistics(){
+		$this->display ();
+	}
+	public function order_tongji(){
+		$sdt = $_REQUEST ['sdt'];
+		$edt = $_REQUEST ['edt'];
+		$obj = new Model();
+		$sql = "select a.*,b.cust_name from blkq_order as a,blkq_cust as b where a.cust_id = b.cust_id and order_time>='".$sdt."' and order_time <= '".$edt."' order by id";
+		$list = $obj->query($sql);
+		$member = $obj->query("select tbid,name from tb_member ");
+		for($i = 0;$i<count($list);$i++){			
+			foreach( $member as $mem ){		
+				if($list[$i]["doctor_id"] == $mem["tbid"] ){
+					$list[$i]["doctor_name"] = $mem["name"];
+				}
+				if($list[$i]["answer_id"] == $mem["tbid"]){
+					$list[$i]["answer_name"] = $mem["name"];
+				}
+			}
+		}
+		
+		
+		
+		$this->ajaxReturn($list);	
+		
+	}
+
+
 	public function video()
 	{
 
@@ -168,10 +196,32 @@ class IndexAction extends Action
 		$tag = $_REQUEST ['tag'];
 		if ($tag)
 		{
+			$data ['tel'] = I ( 'param.tel' );
 			$data ['name'] = I ( 'param.name' );
 			$data ['age'] = I ( 'param.age' );
 			$data ['sex'] = I ( 'param.sex' );
-			$data ['tel'] = I ( 'param.tel' );
+			
+			//根据id获取用户信息
+			$sql = "select * from blkq_cust where cust_tel = " . $data ['tel'];
+			$list = M ( "Cust" )->query($sql);
+			if(count($list)>0){
+				//已经存在
+				$data['cust_id'] = $list[0]['cust_id'];
+			}else{
+				//需要插入,新增这条数据
+				$insert = "insert into blkq_cust (cust_name,age,cust_tel,cust_sex) values ('".$data ['name']."','".$data ['age']."','".$data ['tel']."','".$data ['sex']."')";			
+				$mod = new Model() ;
+				$mod->query($insert);
+				
+				$query = "select cust_id from blkq_cust where cust_tel =" . $data ['tel'];
+				$ll = $mod->query($query);
+				$data['cust_id'] = $ll[0]['cust_id'];
+				
+			}
+			
+			
+			
+			
 			$data ['order_time'] = I ( 'param.order_time' );
 
 			/* alter time2 */
@@ -195,7 +245,7 @@ class IndexAction extends Action
 			$data['yuyue_type'] = I('param.yuyue_type');
 			$data['doctor_id'] = I('param.doctor_id');
 			$data['doctor_name'] = I('param.doctor_name');
-
+			$data['comefrom'] = "w";
 			// dump($data);
 			$ok = M ( "Order" )->add ( $data );
 			//dump($ok);
@@ -204,20 +254,19 @@ class IndexAction extends Action
 				// success
 				$this->success ( "您的预约号是：" . $ok .'    ,我们将会尽快安排助手联系您。'   ,'index');
 				$content=$data ['name']."-".$data ['sex'].'在网站上进行了预约。预约时间是：  '.$data ['order_time'].' '.$data ['order_time2'].'。  预约号：'.$ok.'   预约的联系方式是：'.$data ['tel'].'   症状描述是：'.$data ['desc'];
-				send_email(mc_option('hos_mail'), '有人预约', $content);
+				
 
 				/* do send weixin to admin */
-				$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n<a href='".mc_option('site_url')."/wap.php/index-dafu.html?id=".$ok."&weixin_id=".mc_option('admin_weixin_id')."'>请点击处理</a>";
-				send_weixin(mc_option('admin_weixin_id'), urlencode($weixin_content));
-
-				if(mc_option('admin_weixin_id1')){
-					$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n <a href='".mc_option('site_url')."/wap.php/index-dafu.html?id=".$ok."&weixin_id=".mc_option('admin_weixin_id1')."'>请点击处理</a>";
-					send_weixin(mc_option('admin_weixin_id1'), urlencode($weixin_content));
-				}
-				if(mc_option('admin_weixin_id2')){
-					$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n<a href='".mc_option('site_url')."/wap.php/index-dafu.html?id=".$ok."&weixin_id=".mc_option('admin_weixin_id1')."'>请点击处理</a>";
-					send_weixin(mc_option('admin_weixin_id2'), urlencode($weixin_content));
-				}
+				$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n";
+				//给所有助手发送消息
+				$sql = "select weixin_id,mail,tbid from tb_member where permission_id =2 ";
+				$list = M("tb_member")->query($sql);				
+				foreach($list as $map){
+					send_weixin($map['weixin_id'], urlencode($weixin_content."<a href='http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok."'>点击处理 </a>"));							
+					send_email($map['mail'], '有人预约', $content);
+					//send_email("342834599@qq.com", '有人预约', $content);
+				}	
+					
 			} else
 			{
 				$this->error ( "预约失败~~" );
@@ -226,7 +275,10 @@ class IndexAction extends Action
 		{
 			/*展示预约的页面*/
 			$id = $_REQUEST['id'];
-			$info = selectRow('doctor', $id);
+			//$info = selectRow('doctor', $id);
+			$obj = new Model();
+			$list = $obj->query("select * from tb_member where tbid = ".$id);
+			$info = $list[0];
 			if (isset($_REQUEST['id']) && null == $info)
 			{
 				$this->error("查无此医师，请确认是否正确");
@@ -328,5 +380,80 @@ class IndexAction extends Action
 		$this->assign('info',$info);
 		$this->display();
 	}
+	
+	public function get_zbap_data(){
+		$year = $_REQUEST ['year'];
+		$month = $_REQUEST['month'];
+		$obj = M ( 'zbap' );
+		$sql = "select name,tbid from tb_member where  permission_id = 1";					
+		$list = $obj->query($sql);
+		$day = ($month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31));
+		$time1 = strtotime($year."-".$month."-01");
+		$time2 = strtotime("2015-01-01");
+		$days = ceil(($time1-$time2)/86400) - 1;	
+		for($i=0; $i< count($list);$i++){
+			//获取每个医生的值班信息
+			$sql1 = "select * from blkq_duty where mem_id = ".$list[$i]['tbid'] ." and days >= ".$days ." and days <" . ($days+$day);
+			$list1 = $obj->query($sql1);
+			if($list1 != null){				
+				foreach ($list1 as $two){
+					$add = 	$two['days'];				
+					$list[$i][$add] = $two["moring"];
+				}
+			}			
+		}			
+		$this->ajaxReturn($list);	
+	}
+	//执行更新或者插入操作
+	public function updata_zbap_data(){
+		if($_REQUEST ['sid'] != mc_option("zbap_edit")){
+			return;
+		}
+		$id = $_REQUEST ['id'];
+		$name = $_REQUEST['name'];
+		$duty = $_REQUEST['isDuty'];
+		$obj = M ( 'duty' );
+		$sql = "select * from blkq_duty where  days = ".$id." and mem_id = ".$name;
+		$list = $obj->query($sql);
 
+		if($list == null){
+			//执行插
+			$insert = "insert into blkq_duty (days,mem_id,moring,afternoon) values (".$id.",".$name.",".$duty.",".$duty.")";
+			$obj->query($insert);
+			
+		}else{
+			$update = "update blkq_duty set moring = ". $duty .", afternoon = ". $duty ." where days = ".$id." and mem_id = ".$name;
+			$obj->query($update);
+		}		
+	}
+	public function get_one_zbap(){
+		$stid = $_REQUEST ['stid'];
+		$start = $_REQUEST['start'];
+		$end = $_REQUEST['end'];
+		$obj = M ( 'zbap' );
+		$sql = "select * from blkq_duty where mem_id = ".$stid . " and days>= ".$start . " and days< " . $end;					
+		$list = $obj->query($sql);		
+		$this->ajaxReturn($list);
+	}
+	public function updata_one_zbap(){
+		if($_REQUEST ['sid'] != mc_option("zbap_edit")){
+			return;
+		}
+		$days = $_REQUEST ['days'];
+		$type = $_REQUEST['type'];
+		$isDuty = $_REQUEST['isDuty'];
+		$stid = $_REQUEST['stid'];
+		$obj = M ( 'zbap' );
+		$selcet = "select * from blkq_duty where days = " .$days . " and mem_id = " . $stid;
+		$list = $obj->query($selcet);	
+		if($list == null){
+			//插入
+			$insert = "insert into blkq_duty (days,mem_id,".$type.") values (".$days.",".$stid.",1)";
+			$obj->query($insert);
+		}else{
+			//更新
+			$update = "update blkq_duty set " . $type . " = ". $isDuty . " where days = " .$days . " and mem_id = " . $stid;
+			$obj->query($update);
+		}
+	}
 }

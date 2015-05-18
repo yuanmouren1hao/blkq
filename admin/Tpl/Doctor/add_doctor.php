@@ -34,7 +34,7 @@
 		</div>
 		<div class="field">
 			<select class="input" name="catelog_id" id="catelog_id">
-				<option>#####</option>
+				<option value='3100000055'>#####</option>
 				<volist name='cate_list' id='vo'>
 				<option value='{$vo.id}'>{$vo.child}</option>
 				</volist>

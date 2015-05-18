@@ -75,12 +75,12 @@ class DoctorAction extends Action
 		$this->assign ( 'count', $count );
 		$this->display (); // 输出模板
 	}
-	
+
 	public function queryUser()
 	{
 		$name = $_REQUEST['name'];
 		$tel = $_REQUEST['tel'];
-		
+
 		//echo ($name.$tel);
 		if($name==null || $tel ==null)
 		{
@@ -88,10 +88,10 @@ class DoctorAction extends Action
 			$data['msg']='param set wrong';
 			$this->ajaxReturn($data);
 		}
-		
+
 		$info = selectList('order',"name ='".$name."' and tel = '".$tel."' ",'createtime',0);
 		$this->ajaxReturn($info);
-		
+
 	}
 
 	/* yuanzhang login page*/
@@ -225,8 +225,8 @@ class DoctorAction extends Action
 			//$list = $obj->limit ( $Page->firstRow . ',' . $Page->listRows )->order ( 'doctor_id' )->field("id,doctor_name,yuyue_type,order_time,order_time2,desc,is_chuli,answer_name")->select ();
 			$sql = "select * from blkq_order  ORDER BY doctor_id limit " . $Page->firstRow . ',' . $Page->listRows ;
 			$this->assign ( 'list', $obj->query($sql) ); // 赋值数据集
-			
-			
+				
+				
 			$this->assign ( 'page_now', $show ); // 赋值分页输出
 			$this->assign ( 'count', $count );
 			$this->display (); // 输出模板
@@ -244,12 +244,12 @@ class DoctorAction extends Action
 		$count = $count_list[0]["count(*)"];
 		//$obj = M ( 'member' );
 		import ( 'ORG.Util.Page' ); // 导入分页类
-		//$count = $obj->count (); // 查询满足要求的总记录数		
+		//$count = $obj->count (); // 查询满足要求的总记录数
 		$Page = new Page ( $count, mc_option ( 'page_num' ) ); // 实例化分页类 传入总记录数和每页显示的记录数
 		$Page->setConfig ( 'theme', mc_page () );
 		$show = $Page->show (); // 分页显示输出, 进行分页数据查询 注意limit方法的参数要使用Page类的属性
-		//$list = $obj->order ( 'age' )->limit ( $Page->firstRow . ',' . $Page->listRows )->select ();		
-		$list = $obj->query("select * from blkq_doctor_catelog limit ".$Page->firstRow . ',' . $Page->listRows);	
+		//$list = $obj->order ( 'age' )->limit ( $Page->firstRow . ',' . $Page->listRows )->select ();
+		$list = $obj->query("select * from blkq_doctor_catelog limit ".$Page->firstRow . ',' . $Page->listRows);
 		$this->assign ( 'list', $list ); // 赋值数据集
 		$this->assign ( 'page_now', $show ); // 赋值分页输出
 		$this->assign ( 'count', $count );
@@ -275,6 +275,7 @@ class DoctorAction extends Action
 			$data ['createtime'] = get_current_time ();
 			$data ['updatetime'] = get_current_time ();
 			$data ['catelog_id'] = I ( 'param.catelog_id' );
+				
 			$data ['weixin_id'] = I ( 'param.weixin_id' );
 			$data ['password'] = sha1('12345');
 			$obj = new Model();
@@ -285,7 +286,7 @@ class DoctorAction extends Action
 			//$ok = insertRow ( 'doctor', $data );
 			// dump($data);
 			$this->success ( "添加医师成功，医师初始密码为12345，请尽快通知修改。" );
-			
+				
 		} else
 		{
 			$cate_list = aop_get_catelog_child_list ( '医师团队' );
@@ -313,29 +314,24 @@ class DoctorAction extends Action
 			$data ['content'] = I ( 'param.content' );
 			$data ['updatetime'] = get_current_time ();
 			$data ['catelog_id'] = I ( 'param.catelog_id' );
-			$data ['weixin_id'] = I ( 'param.weixin_id' );	
-			
+			$data ['weixin_id'] = I ( 'param.weixin_id' );
+				
 			$obj = new Model();
 			//desc='".$data ['desc']."',content='".$data ['content']."',
 			$sql = "update tb_member set name = '".$data ['name']."',username='".$data ['name']."',sex='".$data ['sex']."',age='".$data ['age']."',title='".$data ['title']."',tel='".$data ['tel']."'," .
 					"mail = '".$data ['mail']."',updatetime='".$data ['updatetime']."',catelog_id='".$data ['catelog_id']."'," .
 					"weixin_id='".$data ['weixin_id']."',tb_member.desc='".$data ['desc']."',content='".$data ['content']."' where tbid = " .$id;
-			
+				
 			$ok = $obj->query($sql);
-			if ($ok)
-			{
-				$this->success ( "更新成功", U ( "doctor/index_doctor" ) );
-			} else
-			{
-				$this->error ( "更新失败" );
-			}
+            $this->success ( "更新成功", U ( "doctor/index_doctor" ) );
+
 		} else
 		{
 			$id = I ( "param.id" );
 			//$info = selectRow ( 'tb_member', $id );
 			$mod = new Model();
 			$info = $mod->query("select * from blkq_doctor_catelog where tbid = ".$id);
-			
+				
 			$cate_list = aop_get_catelog_child_list ( '医师团队' );
 			$this->assign ( 'cate_list', $cate_list );
 			$this->assign ( 'info', $info[0] );
@@ -359,7 +355,7 @@ class DoctorAction extends Action
 	{
 
 		/* get id */
-		$id = I ( "param.id" );		
+		$id = I ( "param.id" );
 		$old_secret = selectAttr('doctor', 'password', $id);
 		if($old_secret == sha1('12345'))
 		{
@@ -368,10 +364,10 @@ class DoctorAction extends Action
 		else {
 			$data['password'] = sha1('12345');
 			$obj = new Model();
-			
+				
 			var_dump("update tb_member set password = '". $data['password'] ."' where tbid = ". $id);
 			return;
-			
+				
 			$ok = $obj->query("update tb_member set password = '". $data['password'] ."' where tbid = ". $id);
 			//$ok = updateRow('doctor', $id, $data);
 

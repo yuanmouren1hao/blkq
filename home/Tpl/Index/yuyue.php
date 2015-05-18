@@ -35,7 +35,7 @@
             
             
 			<form action="<?php echo U("index/yuyue");?>" method="post" class="form-x">
-            	<input type="hidden" name="doctor_id" value="{$info.id}" />
+            	<input type="hidden" name="doctor_id" value="{$info.tbid}" />
                 <input type="hidden" name="doctor_name" value="{$info.name}" />
                                 
 				<div class="form-group">

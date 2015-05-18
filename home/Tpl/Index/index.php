@@ -33,15 +33,15 @@
 		<ul id="div_li">
 			<li><div id='h_zzy'>
 					<i class="iconfont">&#xe604;</i><br> <a
-						href="<?php echo U("page/page_detail");?>?father=种植牙&child=种植流程">口腔种植</a>
+						href="<?php echo U("page/page_detail");?>?father=种植牙&child=种植流程">种植牙</a>
 				</div></li>
 			<li><div id='h_ycjz'>
 					<i class="iconfont">&#xe600;</i><br> <a
-						href="<?php echo U("page/page_detail");?>?father=牙齿矫正&child=隐形矫正">口腔正畸</a>
+						href="<?php echo U("page/page_detail");?>?father=牙齿矫正&child=隐形矫正">牙齿矫正</a>
 				</div></li>
 			<li><div id='h_mrxf'>
 					<i class="iconfont">&#xe603;</i><br> <a
-						href="<?php echo U("page/page_detail");?>?father=牙齿修复&child=全瓷牙">口腔修复</a>
+						href="<?php echo U("page/page_detail");?>?father=牙齿修复&child=全瓷牙">牙齿修复</a>
 				</div></li>
 			<li><div id='h_ycmb'>
 					<i class="iconfont">&#xe602;</i><br> <a
@@ -49,7 +49,7 @@
 				</div></li>
 			<li><div id='h_ytjk'>
 					<i class="iconfont">&#xe604;</i><br> <a
-						href="<?php echo U("page/page_detail");?>?father=牙周专科&child=牙周炎危害">牙周病</a>
+						href="<?php echo U("page/page_detail");?>?father=牙周专科&child=牙周炎危害">牙周专科</a>
 				</div></li>
 			<li><div id='h_cgzl'>
 					<i class="iconfont">&#xe606;</i><br> <a
@@ -57,11 +57,11 @@
 				</div></li>
 			<li><div id='h_etck'>
 					<i class="iconfont">&#xe601;</i><br> <a
-						href="<?php echo U("page/page_detail");?>?father=儿童齿科&child=窝沟封闭">儿童口腔</a>
+						href="<?php echo U("page/page_detail");?>?father=儿童齿科&child=窝沟封闭">儿童齿科</a>
 				</div></li>
 			<li><div id='h_kqbj'>
 					<i class="iconfont">&#xe609;</i><br> <a
-						href="<?php echo U("page/page_detail");?>?father=口腔保健&child=儿童护理">预防口腔</a>
+						href="<?php echo U("page/page_detail");?>?father=口腔保健&child=儿童护理">口腔保健</a>
 				</div></li>
 		</ul>
 	</div>

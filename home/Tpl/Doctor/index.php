@@ -18,7 +18,7 @@
 					<li class="padding-big-bottom">
 						<div class="media media-x">
 							<a class="float-left"
-								href="<?php echo U("Doctor/doctor_detail");?>?id={$vo.id}"> <img
+								href="<?php echo U("Doctor/doctor_detail");?>?id={$vo.tbid}"> <img
 								src="{$vo.image}" width="150px" class="radius" alt="{$vo.name}">
 							</a>
 							
@@ -30,7 +30,7 @@
 								<div>{$vo.desc}</div>
 							</div>
 						</div>
-						<a class="badge bg-blue-light margin-large-left" href="<?php echo U("index/yuyue");?>?id={$vo.id}">我要预约 >></a>
+						<a class="badge bg-blue-light margin-large-left" href="<?php echo U("index/yuyue");?>?id={$vo.tbid}">我要预约 >></a>
 					</li>
 					</volist>
 

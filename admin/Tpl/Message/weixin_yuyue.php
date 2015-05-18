@@ -22,7 +22,7 @@
 				name="checkall" checkfor="id" value="全选"  style='display:none'/>
 		</div>
 		<table class="table table-hover">	
-				<tr><td width="60">预约号</td><td><strong>{$list.id}</strong></td></tr>
+				<tr><td width="60">预约号</td><td><strong>{$vo.id}</strong></td></tr>
 				<tr><td width="80">姓名</td><td>{$vo.name}</td></tr>
 				<tr><td width="70">年龄段</td><td>{$vo.age}</td></tr>
 				<tr><td width="50">性别</td><td>{$vo.sex}</td></tr>

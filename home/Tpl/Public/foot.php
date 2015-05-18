@@ -20,7 +20,7 @@
 							<li><a href="<?php echo U("doctor/yazhou");?>">牙周医师</a></li>
 							<li><a href="<?php echo U("index/appoint");?>" target="_blank">预约信息</a>
 							</li>
-							<li><a href="__ROOT__/admin.php/doctor/login">医师登录</a></li>
+						
 						</ul>
 					</li>
 					<li>诊疗服务

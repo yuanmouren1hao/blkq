@@ -1,0 +1,13 @@
+
+.border {height: 50px;padding: 6px;}
+.border label{height:34px;line-height:34px;margin-left:10px;}
+.border .float-left{float:left;}
+.border .cust-input{width:150px;}
+.border .button{margin-left:10px;}
+.border  .text-blue{margin-right: 5px;}
+.ui-jqgrid .ui-pg-input, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-input{height:15px;}
+.ui-state-default.ui-jqgrid-hdiv.ui-corner-top{height:25px;}
+.button.button-small.dropdown-toggle{width:84px;}
+
+.border-dt{margin: 10px;}
+#gbox_list{margin: 8px;}

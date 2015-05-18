@@ -52,10 +52,17 @@ window.onload=function(){
 			aIcoLi[i].className='';
 			aPicLi[i].style.filter='alpha(opacity:0)';
 			aPicLi[i].style.opacity=0;
+
+			/*my add to show diff url*/
+			aPicLi[i].style.zIndex=0;
+			
 			aTextLi[i].getElementsByTagName('h2')[0].className='';
 			miaovStopMove( aPicLi[i]);
 		}
 		aIcoLi[iNow].className='active';
+
+		/*now image on the top*/
+		aPicLi[iNow].style.zIndex=1;
 		
 		miaovStartMove(aPicLi[iNow],{opacity:100},MIAOV_MOVE_TYPE.BUFFER);
 		aTextLi[iNow].getElementsByTagName('h2')[0].className='show';
@@ -98,12 +105,11 @@ window.onload=function(){
 	<div id="box">
 		<ul id="pic_list">
 			<volist name="video_list" id="vo">
-			<li <?php if($i==1):?>
-				style="z-index: 2; opacity: 1; fliter: alpha(opacity =   100);"
-				<?php endif;?>><a
-				href="<?php echo U("index/news_detail");?>?id={$vo.id}" target="_parent"> <img
-					width="780" height="330" src="{$vo.fmimg_b}" alt="{$vo.title}" />
-			</a></li>
+				<li <?php if($i==1):?> style="opacity: 1;z-index:0;"<?php else: ?> style="z-index=0;" <?php endif;?>>
+					<a href="<?php echo U("index/news_detail");?>?id={$vo.id}" target="_parent">
+						<img width="780" height="330" src="{$vo.fmimg_b}" alt="{$vo.title}" />
+					</a>
+				</li>
 			</volist>
 		</ul>
 
@@ -111,25 +117,26 @@ window.onload=function(){
 
 		<ul id="text_list">
 			<volist name="video_list" id="vo">
-			<li <?php if($i==1):?> class="show" <?php endif;?>><h2>
-					<a target="_parent"
-						href="<?php echo U("index/news_detail");?>?id={$vo.id}">{$vo.title}</a>
-				</h2></li>
+			<li <?php if($i==1):?> class="show" <?php endif;?>>
+				<h2><a target="_parent" href="<?php echo U("index/news_detail");?>?id={$vo.id}">{$vo.title}</a></h2>
+			</li>
 			</volist>
 		</ul>
 
 		<div id="ico_list">
 			<ul>
 				<volist name="video_list" id="vo">
-				<li <?php if($i==1):?> class="active" <?php endif;?>><a
-					href="javascript:void(0)"  target="_parent"><img width="64" height="34"
-						src="{$vo.fmimg_s}" alt="{$vo.title}" /></a></li>
+					<li <?php if($i==1):?> class="active" <?php endif;?> >
+						<a href="javascript:void(0)">
+							<img width="64" height="34" src="{$vo.fmimg_s}" alt="{$vo.title}" />
+						</a>
+					</li>
 				</volist>
 			</ul>
 		</div>
 
-		<a href="javascript:void(0)" id="btn_prev" class="btn"></a> <a
-			href="javascript:void(0)" id="btn_next" class="btn showBtn"></a>
+		<a href="javascript:void(0)" id="btn_prev" class="btn"></a>
+		<a href="javascript:void(0)" id="btn_next" class="btn showBtn"></a>
 	</div>
 </body>
 </html>

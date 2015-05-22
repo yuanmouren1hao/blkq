@@ -123,9 +123,8 @@ class IndexAction extends Action
 
 	public function test()
 	{
-		$model =new Model();
-
-		$this->display ();
+		send_weixin('o8V87t4IbUJh-wpwnT-kK4Tbbeks', "hello world");
+		//$this->display ();
 	
 	}
 

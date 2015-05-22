@@ -779,7 +779,7 @@ function send_get($url)
  */
 function send_weixin($weixin_id, $content)
 {
-	$url = 'http://1.weixinblkq.sinaapp.com/4/send_mes.php?id='.$weixin_id.'&content='.$content;
+	$url = 'http://121.40.76.106/sendwechat/beilun/send_mes.php?id='.$weixin_id.'&content='.$content;
 	$result = send_get($url);
 	return $result;
 }

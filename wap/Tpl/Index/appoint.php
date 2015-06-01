@@ -71,7 +71,7 @@
 						<label for="readme">预约时间</label>
 					</div>
 					<div class="field">
-						<input  id="tm" >
+						<input  id="tm" name='order_time'>
 					</div>
 				</div>	
                 <div class="form-group">
@@ -79,9 +79,10 @@
 						<label for="readme">时间段</label>
 					</div>
 					<div class="field">
-						<label class="button active"><input name='apmp'  checked="checked" type="radio">
-								上午</label> <label class="button"><input name='apmp'  type="radio">
-								下午</label> 
+						<select name="order_time2" class="input input-auto" size="">
+							<option value="1" selected>上午</option>
+							<option value="2">下午</option>
+						</select>
 					</div>
 				</div>
                 <div class="form-group">
@@ -89,10 +90,21 @@
 						<label for="readme">预约类型</label>
 					</div>
 					<div class="field">
-						<label class="button active"><input name='type'  checked="checked" type="radio">
-								洗牙</label> <label class="button"><input name='type'  type="radio">
-								种植牙</label><label class="button"><input name='type'  type="radio">
-								其它</label>  
+						<select name="yuyue_type" class="input input-auto" size="">
+							<option value="拔牙">拔牙</option>
+                            <option value="正畸">正畸</option>
+                            <option value="补牙">补牙</option>
+                            <option value="修复">修复</option>
+                            <option value="洗牙">洗牙</option>
+                            <option value="美白">美白</option>
+                            <option value="种植一期">种植一期</option>
+                            <option value="种植二期">种植二期</option>
+                            <option value="牙周刮治">牙周刮治</option>
+                            <option value="根管治疗">根管治疗</option>
+                            <option value="正畸设计">正畸设计</option>
+                            <option value="种植修复">种植修复</option>
+                            <option selected="selected" value="其他">其他</option>
+						</select>
 					</div>
 				</div>				
                 <div class="form-group check-error">
@@ -103,6 +115,7 @@
 						<textarea class="input" rows="5" cols="50" placeholder="症状描述" name="desc" data-validate="required:请填写右侧的症状"></textarea>
 					<div class="input-help"><ul><li>请填写您的症状</li></ul></div></div>
 				</div>	
+					<input name="tag" value="tag" type="hidden" />
 					<div class="form-button margin-bottom"><button class="button bg-blue" type="submit">立即预约</button></div>																					 
 		   </form>
          </div>

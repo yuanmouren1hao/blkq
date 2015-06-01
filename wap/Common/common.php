@@ -289,6 +289,7 @@ function is_login()
  * @return integer 0 发送成功 ，其他发送失败
  * @author fuhao.li
  * @copyright 3renstudio
+ * send_email("342834599@qq.com", '有人预约', $content);
  */
 function send_email($to_email, $title, $content)
 {
@@ -782,5 +783,19 @@ function send_weixin($weixin_id, $content)
 	$url = 'http://121.40.76.106/sendwechat/beilun/send_mes.php?id='.$weixin_id.'&content='.$content;
 	$result = send_get($url);
 	return $result;
+}
+
+/**
+ * 发送微信的模板消息
+ * Enter description here ...
+ * @param unknown_type $weixin_id
+ * @param unknown_type $url
+ * @param unknown_type $keyword1
+ * @param unknown_type $keyword2
+ */
+function sendWechatTempMsg($weixin_id, $url, $keyword1, $keyword2){
+	$url = 'http://121.40.76.106/sendwechat/beilun/send.php?id='.$weixin_id.'&url='.$url.'&keyword1='.$keyword1.'&keyword2='.$keyword2;
+	$result = send_get($url);
+	return  $result;
 }
 

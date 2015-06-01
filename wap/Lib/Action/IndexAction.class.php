@@ -61,7 +61,82 @@ class IndexAction extends Action
 
 	public function appoint()
 	{
-		$this->display();
+		$tag = $_REQUEST ['tag'];
+		if($tag){
+			$data ['tel'] = I ( 'param.tel' );
+			$data ['name'] = I ( 'param.name' );
+			$data ['age'] = I ( 'param.age' );
+			$data ['sex'] = I ( 'param.sex' );
+			
+			//根据id获取用户信息
+			$sql = "select * from blkq_cust where cust_tel = " . $data ['tel'];
+			$list = M ( "Cust" )->query($sql);
+			if(count($list)>0){
+				//已经存在
+				$data['cust_id'] = $list[0]['cust_id'];
+			}else{
+				//需要插入,新增这条数据
+				$insert = "insert into blkq_cust (cust_name,age,cust_tel,cust_sex) values ('".$data ['name']."','".$data ['age']."','".$data ['tel']."','".$data ['sex']."')";			
+				$mod = new Model() ;
+				$mod->query($insert);
+				
+				$query = "select cust_id from blkq_cust where cust_tel =" . $data ['tel'];
+				$ll = $mod->query($query);
+				$data['cust_id'] = $ll[0]['cust_id'];				
+			}		
+			$data ['order_time'] = I ( 'param.order_time' );
+
+			/* alter time2 */
+			$time2 = I ( 'param.order_time2' );
+			if ($time2==1){
+				$data ['order_time2'] = '8:00-12:00';
+				/* add dottime*/
+				$data['dottime'] = '0,16';
+			}
+			else if ($time2==2)
+			{
+				$data ['order_time2'] = '12:00-17:00';
+				/* add dottime*/
+				$data['dottime'] = '16,39';
+			}
+			$data ['desc'] = I ( 'param.desc' );
+			$data ['ip'] = get_current_ip ();
+			$data ['createtime'] = get_current_time ();
+			$data['yuyue_type'] = I('param.yuyue_type');
+			$data['doctor_id'] = I('param.doctor_id');
+			$data['doctor_name'] = I('param.doctor_name');
+			$data['comefrom'] = "w";
+			// dump($data);
+			$ok = M ( "Order" )->add ( $data );
+			//dump($ok);
+			if ($ok)
+			{
+				// success
+				$this->success ( "您的预约号是：" . $ok .'    ,我们将会尽快安排助手联系您。'   ,'index');
+				$content=$data ['name']."-".$data ['sex'].'在网站上进行了预约。预约时间是：  '.$data ['order_time'].' '.$data ['order_time2'].'。  预约号：'.$ok.'   预约的联系方式是：'.$data ['tel'].'   症状描述是：'.$data ['desc'];
+				
+
+				/* do send weixin to admin */
+				$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n";
+				//给所有助手发送消息
+				$sql = "select weixin_id,mail,tbid from tb_member where permission_id =2 ";
+				$list = M("tb_member")->query($sql);				
+				foreach($list as $map){
+					//send_weixin($map['weixin_id'], urlencode($weixin_content."<a href='http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok."'>点击处理 </a>"));							
+					$url = "http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok;
+					sendWechatTempMsg($map['weixin_id'], urlencode($url), urlencode(date ( "Y-m-d_H:i:s" )), urlencode($data['yuyue_type']) );
+					
+					/*send mail*/
+					send_email($map['mail'], '有人预约', $content);
+				}	
+					
+			} else
+			{
+				$this->error ( "预约失败~~" );
+			}			
+		}else{
+			$this->display();
+		}		
 	}
 
 	public function content()

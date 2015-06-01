@@ -15,7 +15,7 @@ return array(
 	'DB_TYPE'=>'mysql',
 	'DB_HOST'=>'localhost',
 		
-	'DB_NAME'=>'blkq',
+	'DB_NAME'=>'test_blkq_db',
 	'DB_USER'=>'aoplee',
 	'DB_PWD'=>'aoplee',
 		

@@ -7,7 +7,7 @@ class SystemAction extends Action
 	{
 
 		$this->display ();
-	
+
 	}
 
 	public function setmail()
@@ -21,7 +21,7 @@ class SystemAction extends Action
 		{
 			$ok = mc_update_option ( 'hos_mail', I ( 'param.hos_mail' ) );
 			$ok = mc_update_option ( 'stmp_name', I ( 'param.stmp_name' ) );
-			
+
 			if ($ok)
 			{
 				$this->success ( "更新成功" );
@@ -33,7 +33,7 @@ class SystemAction extends Action
 		{
 			$this->display ();
 		}
-	
+
 	}
 
 	public function test_mail()
@@ -57,7 +57,7 @@ class SystemAction extends Action
 		{
 			$this->error ( "发生了一点小故障~~" );
 		}
-	
+
 	}
 
 	public function jianjie()
@@ -83,7 +83,7 @@ class SystemAction extends Action
 			$this->assign ( 'info', $content );
 			$this->display ();
 		}
-	
+
 	}
 
 	public function map()
@@ -109,7 +109,7 @@ class SystemAction extends Action
 			$this->assign ( 'info', $content );
 			$this->display ();
 		}
-	
+
 	}
 
 	public function zixun()
@@ -135,7 +135,7 @@ class SystemAction extends Action
 			$this->assign ( 'info', $content );
 			$this->display ();
 		}
-	
+
 	}
 
 	public function liucheng()
@@ -161,7 +161,7 @@ class SystemAction extends Action
 			$this->assign ( 'info', $content );
 			$this->display ();
 		}
-	
+
 	}
 
 	public function shejiao()
@@ -190,7 +190,7 @@ class SystemAction extends Action
 		{
 			$this->display ();
 		}
-	
+
 	}
 
 	public function user()
@@ -214,7 +214,7 @@ class SystemAction extends Action
 		{
 			$this->display ();
 		}
-	
+
 	}
 
 	public function seo()
@@ -239,13 +239,13 @@ class SystemAction extends Action
 		{
 			$this->display ();
 		}
-	
+
 	}
 
-	
+
 	public function all()
 	{
-	
+
 		if (!is_login()) {
 			$this->error("还没有登陆哦~~",U("index/login"));
 		}
@@ -275,13 +275,13 @@ class SystemAction extends Action
 		{
 			$this->display ();
 		}
-	
+
 	}
-	
-	
+
+
 	public function f_set()
 	{
-	
+
 		if (!is_login()) {
 			$this->error("还没有登陆哦~~",U("index/login"));
 		}
@@ -305,12 +305,12 @@ class SystemAction extends Action
 		{
 			$this->display ();
 		}
-	
+
 	}
-	
+
 	public function js_set()
 	{
-	
+
 		if (!is_login()) {
 			$this->error("还没有登陆哦~~",U("index/login"));
 		}
@@ -329,7 +329,38 @@ class SystemAction extends Action
 		{
 			$this->display ();
 		}
-	
+
 	}
-	
+
+
+	/*行政管理*/
+	public function administrator()
+	{
+
+		$tag = $_REQUEST['tag'];
+		//echo $tag;
+
+		switch ($tag) {
+			case null:
+				$this->display();
+				break;
+
+			case 'edit':
+				mc_update_option ( 'oa_url', I ( 'param.oa_url' ) );
+				mc_update_option ( 'zbap_edit', I ( 'param.zbap_edit' ) );
+				//$oa_url = I ( 'param.oa_url' );
+				//$zbap = I ( 'param.zbap_edit' );
+				//dump($oa_url);
+				//dump($zbap);
+				$this->display();
+				break;
+
+			default:
+				break;
+		}
+
+	}
+
+
+
 }

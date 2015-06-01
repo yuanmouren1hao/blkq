@@ -279,7 +279,7 @@ class DoctorAction extends Action
 			$data ['weixin_id'] = I ( 'param.weixin_id' );
 			$data ['password'] = sha1('12345');
 			$obj = new Model();
-			$sql = "insert into tb_member (permission_id,type,username,name,sex,age,title,tel,mail,image,tb_member.desc,content,createtime,updatetime,catelog_id,weixin_id,password) values ('2','1','".I ( 'param.name' )."','".I ( 'param.name' )."'," .
+			$sql = "insert into tb_member (permission_id,type,username,name,sex,age,title,tel,mail,image,tb_member.desc,content,createtime,updatetime,catelog_id,weixin_id,password) values ('1','1','".I ( 'param.name' )."','".I ( 'param.name' )."'," .
 					"'".I ( 'param.sex' )."','".$data ['age']."','".I ( 'param.title' )."','".I ( 'param.tel' )."','". I ( 'param.mail' )."','".I ( 'param.image' )."','".I ( 'param.desc' )."'," .
 							"'".I ( 'param.content' )."','".get_current_time ()."','".get_current_time ()."','".I ( 'param.catelog_id' )."','".I ( 'param.weixin_id' )."','".sha1('12345')."')";
 			$ok = $obj->query($sql);

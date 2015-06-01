@@ -123,7 +123,8 @@ class IndexAction extends Action
 
 	public function test()
 	{
-		send_weixin('o8V87t4IbUJh-wpwnT-kK4Tbbeks', "hello world");
+		//send_weixin('o8V87t4IbUJh-wpwnT-kK4Tbbeks', "hello world");
+		sendWechatTempMsg('o8V87t4IbUJh-wpwnT-kK4Tbbeks', 'www.baidu.com', date ( "Y-m-d_H:i:s" ), '预约类型');
 		//$this->display ();
 	
 	}

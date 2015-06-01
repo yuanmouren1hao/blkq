@@ -173,6 +173,7 @@ class MessageAction extends Action
 		if($answer[0]['answer_id'] == ""){
 			$data['is_chuli']=1;
 			$data['answer_id']=I ( "param.sid" );
+			$data['answer_time']=date("Y-m-d H:i:s");
 			$data['edit_id']=I ( "param.sid" );
 			$ok = updateRow('order', $id, $data) ;
 			if ($ok)
@@ -256,7 +257,8 @@ class MessageAction extends Action
 				$time22=$time22*15;
 			}
 			
-			
+			$data['edit_time'] = get_current_time ();
+			$data['edit_id']=I('param.sid');
 			
 			//dump($time22);
 			$data['order_time2']=$time11.":".$time12."-".$time21.":".$time22;
@@ -348,15 +350,17 @@ class MessageAction extends Action
 			$ok = updateRow('order', $id, $data) ;
 
 			/*给对应的weixin_id发送微信*/
-			/*给对应的weixin_id发送微信*/
-			//$weixin_id = selectAttr('doctor', 'weixin_id', $thedata['doctor_id']);
 			$obj = new Model();
 			$list = $obj->query("select * from tb_member where tbid = ".$thedata['doctor_id']);
 			$weixin_id = $list[0]["weixin_id"];			
 			$content =urlencode("【网站预约消息】\n\n预约号:".$thedata['id']."\n预约时间:".$thedata['order_time']."-".$thedata['order_time2']."\n预约类别:".$thedata['yuyue_type']."\n描述:".$thedata['desc']."\n\n<a href='http://www.blkqyy.com/admin.php/message/add_yuyue.html?weixin_id=".$weixin_id."&time=".$thedata['order_time']."'>点击查看 </a>");
 			
 			$id = $weixin_id;
-			send_weixin($id, $content);
+			//send_weixin($id, $content);
+			$url = "http://www.blkqyy.com/admin.php/message/add_yuyue.html?weixin_id=".$weixin_id."&time=".$thedata['order_time'];
+			sendWechatTempMsg($id, urlencode($url), urlencode(date ( "Y-m-d_H:i:s" )), urlencode($thedata['yuyue_type']));
+			
+			
 			$this->success("send weixin success");
 		}else {
 			$this->error("没有指定医师哦，请编辑指定医师~~");
@@ -437,7 +441,7 @@ class MessageAction extends Action
 			
 			$weixin_id = $_REQUEST ['weixin_id'];	
 			$obj = new Model();
-			if($weixin_id > 10){
+			if(strlen($weixin_id) > 5){
 				$wei =$obj->query("select tbid from tb_member where weixin_id = " . $weixin_id);
 				$tbid = $wei[0]["tbid"];
 			}	
@@ -498,7 +502,7 @@ class MessageAction extends Action
 			$weixin_id = $_REQUEST ['weixin_id'];	
 			//根据weixin_id获取tbid；
 			$obj = new Model();
-			if($weixin_id > 10){
+			if(strlen($weixin_id) > 5){
 				$wei =$obj->query("select tbid from tb_member where weixin_id = " . $weixin_id);
 				$tbid = $wei[0]["tbid"];
 			}					
@@ -542,7 +546,12 @@ class MessageAction extends Action
 			}else{
 				$data['isconfirm'] = 0;
 			}
-			
+			$iscome = $_REQUEST ['iscome'];
+			if($iscome == "true"){
+				$data['iscome'] = 1;		
+			}else{
+				$data['iscome'] = 0;
+			}
 			$ok = updateRow ( 'order', $id, $data );
 			$this->ajaxReturn($ok);		
 	}

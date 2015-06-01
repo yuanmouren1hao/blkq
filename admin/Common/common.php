@@ -784,6 +784,20 @@ function send_weixin($weixin_id, $content)
 	return $result;
 }
 
+/**
+ * 发送微信的模板消息
+ * Enter description here ...
+ * @param unknown_type $weixin_id
+ * @param unknown_type $url
+ * @param unknown_type $keyword1
+ * @param unknown_type $keyword2
+ */
+function sendWechatTempMsg($weixin_id, $url, $keyword1, $keyword2){
+	$url = 'http://121.40.76.106/sendwechat/beilun/send.php?id='.$weixin_id.'&url='.$url.'&keyword1='.$keyword1.'&keyword2='.$keyword2;
+	$result = send_get($url);
+	return  $result;
+}
+
 
 /**
  * 导出数据为excel表格

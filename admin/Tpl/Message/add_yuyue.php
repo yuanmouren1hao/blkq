@@ -227,6 +227,8 @@
 		</div>
 		<div class="field">
 			<input type='checkbox' id='confirm' class='margin-top margin-left'>
+			<label class='margin-big-left'>已就诊</label>
+			<input type='checkbox' id='iscome' class='margin-top margin-left'>
 		</div>
 	</div>
 	<div class="form-group padding-big-left">
@@ -464,6 +466,7 @@ $(function() {
 					answer_id : getQueryString("sid"),
 					cust_id : $("#span_tel").attr("now"),
 					confirm : $("#confirm")[0].checked,
+					iscome : $("#iscome")[0].checked,
 				},
 				success : function(json) {
 					query();
@@ -490,6 +493,7 @@ $(function() {
 				doctor_id  :$("#sel_doc").val(),
 				answer_id : getQueryString("sid"),
 				confirm : $("#confirm")[0].checked,
+				iscome : $("#iscome")[0].checked,
 			},
 			success : function(json) {
 				query();
@@ -547,6 +551,7 @@ $(function() {
         $("#time21").val("17");
         $("#time22").val("3");
         $("#confirm")[0].checked = false;
+        $("#iscome")[0].checked = false;
         query();
     	
     })
@@ -734,7 +739,11 @@ $(function() {
 					}else{
 						$("#confirm")[0].checked = false;
 					}
-					
+					if(json.iscome == 1){
+						$("#iscome")[0].checked = true;
+					}else{
+						$("#iscome")[0].checked = false;
+					}
 					var time11 = Math.floor(arry[0]/4) + 8;
 			        var time12 = arry[0]%4;
 			        var time21 = Math.floor( arry[1]/4) + 8;

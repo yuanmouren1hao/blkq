@@ -16,17 +16,17 @@
 				<div class="height"><span class="text-big">使用方法</span>：只花 <span class="tag bg-red">2分钟</span> ，即可完成免费预约，我院承诺您的个人隐私将被保密。</div>
 				<div class="height">提交前，请核对好个人信息是否准确填写；</div>
 				<div class="height">预约成功后，将显示你的预约号，并且24小时内我院将有专人与您联系，凭预约号到院就诊。</div>
-				<div class="height">预约以最后助手调整为准，请及时查看<a class="badge bg-red-light" href="{:U('index/appoint')}" target="_blank">预约信息页面</a></div>
+				<div class="height">预约以最后助手调整为准，也可以通过拨打我们的预约电话：<strong>55128555/55128276</strong>。</div>
 			</div>
 			<div class="x4-move line padding-bottom">
 				<?php if (null != $_REQUEST['id']):?>
 				<div><img src="{$info.image}"   width="128" height="128" class="radius-circle" alt="..." />
-                	<span class="badge bg-green-light">预约 <strong>{$info.name}</strong> 医师</span>   
+                	</br><span class="badge bg-green-light">预约 <strong>{$info.name}</strong> 医师</span>   
                     <span>   <a href="{:U('doctor/index')}">更换 >></a></span>
                 </div>
                 <?php else: ?>
                 <div><img src="__PUBLIC__/img/none-doctor.png"   width="128" height="128" class="radius-circle" alt="..." />
-                	<span class="badge bg-green-light">您没有选择医师，助手将为您安排。</span>   
+                	</br><span class="badge bg-green-light">您没有选择医师，助手将为您安排。</span>   
                     <span>   <a href="{:U('doctor/index')}">选择医师 >></a></span>
                 </div>
                 <?php endif;?>

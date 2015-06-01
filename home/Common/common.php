@@ -784,3 +784,45 @@ function send_weixin($weixin_id, $content)
 	return $result;
 }
 
+/**
+ * 发送微信的模板消息
+ * Enter description here ...
+ * @param unknown_type $weixin_id
+ * @param unknown_type $url
+ * @param unknown_type $keyword1
+ * @param unknown_type $keyword2
+ */
+function sendWechatTempMsg($weixin_id, $url, $keyword1, $keyword2){
+	$url = 'http://121.40.76.106/sendwechat/beilun/send.php?id='.$weixin_id.'&url='.$url.'&keyword1='.$keyword1.'&keyword2='.$keyword2;
+	$result = send_get($url);
+	return  $result;
+}
+
+
+function exportexcel($data=array(),$title=array(),$filename='report'){
+	header("Content-type:application/octet-stream");
+	header("Accept-Ranges:bytes");
+	header("Content-type:application/vnd.ms-excel");
+	header("Content-Disposition:attachment;filename=".$filename.".xls");
+	header("Pragma: no-cache");
+	header("Expires: 0");
+	//导出xls 开始
+	if (!empty($title)){
+		foreach ($title as $k => $v) {
+			$title[$k]=iconv("UTF-8", "GB2312",$v);
+		}
+		$title= implode("\t", $title);
+		echo "$title\n";
+	}
+	if (!empty($data)){
+		foreach($data as $key=>$val){
+			foreach ($val as $ck => $cv) {
+				$data[$key][$ck]=iconv("UTF-8", "GB2312", $cv);
+			}
+			$data[$key]=implode("\t", $data[$key]);
+
+		}
+		echo implode("\n",$data);
+	}
+}
+

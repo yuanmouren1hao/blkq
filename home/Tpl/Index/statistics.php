@@ -33,15 +33,20 @@
 
 </head>
 
-<body>
+<body style='overflow-x:hidden'>
 
 		<div class="border border-dt">
+		<button class="button float-left" type="submit" id="query"><span class="icon-search text-blue"></span>查询</button>
+		<form method="get" class="form-x" name="form1">	
 			<label class="float-left">开始时间：</label>
 			<input class="WDate input float-left cust-input" id="sdt" required="" name="sdt" onclick="WdatePicker({dateFmt:&quot;yyyy-MM-dd&quot;})">
 			<label class="float-left">结束时间：</label>
 			<input class="WDate input float-left cust-input" id="edt" required="" name="edt" onclick="WdatePicker({dateFmt:&quot;yyyy-MM-dd&quot;})">
-			<button class="button float-left" type="submit" id="query"><span class="icon-search text-blue"></span>查询</button>
+			<input name="tag" value="tag" type="hidden" />
+			<input class="button bg-yellow" type="submit" value="导出excel" onclick="form1.tag.value='export'" />
 			
+		</form>
+		
 		</div>
 		
 		<table id="list"></table>
@@ -135,18 +140,28 @@ function getGrid(mydata){
 	jQuery("#list").jqGrid({
 		datatype: "local",
 		colNames:['预约号','病人编号', '病人名字', '预约时间','病情描述','医生编号','医生名称','预约类型','创建预约的助手id',
-		'创建人员名字','类型'],
+		'创建人员名字','创建/处理时间','编辑人员','编辑时间','是否就诊','类型',],
 		colModel:[
-			{name:'id',index:'id', width:120,fixed:true},
+			{name:'idd',index:'idd', width:120,fixed:true},
 			{name:'cust_id',index:'cust_id', width:60,hidden:true,fixed:true},
 			{name:'cust_name',index:'cust_name', width:100,align:"center",fixed:true},
 			{name:'order_time',index:'order_time', width:150,align:"center",fixed:true},
-			{name:'desc',index:'desc',},		
+			{name:'desc',index:'desc',hidden:true},		
 			{name:'doctor_id',index:'doctor_id', width:80,hidden:true},		
 			{name:'doctor_name',index:'doctor_name', width:100,fixed:true,align:"center"},
 			{name:'yuyue_type',index:'yuyue_type', width:100,fixed:true,align:"center"},
 			{name:'answer_id',index:'answer_id', width:80, align:"right",sorttype:"float",hidden:true},
-			{name:'answer_name',index:'answer_name', width:80,align:"center",fixed:true},		
+			{name:'answer_name',index:'answer_name', width:80,align:"center",fixed:true},
+			{name:'answer_time',index:'answer_time', width:120,align:"center",fixed:true},	
+			{name:'edit_name',index:'edit_name', width:120,align:"center",fixed:true},
+			{name:'edit_time',index:'edit_time', width:120,align:"center",fixed:true},
+			{name:'iscome',index:'iscome', width:120,align:"center",fixed:true,formatter:function(a,b,c){
+				if(a=="1"){
+					return "就诊";
+				}else{
+					return "未就诊";
+				}
+			}},													
 			{name:'comefrom',index:'comefrom', width:80,align:"center",fixed:true,formatter:function(a,b,c){
 				if(a=="w"){
 					return "网上预约";

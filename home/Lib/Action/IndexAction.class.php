@@ -100,13 +100,46 @@ class IndexAction extends Action
 	}
 
 public function statistics(){
-		$this->display ();
+		$tag = $_REQUEST['tag'];
+		
+		
+		if($tag == 'export'){
+		
+			$sdt = $_REQUEST ['sdt'];
+			$edt = $_REQUEST ['edt'];
+			$obj = new Model();
+			$sql = "select a.id,b.cust_name,a.order_time,a.doctor_id,yuyue_type,answer_id,answer_time,edit_id,edit_time,iscome,comefrom from blkq_order as a,blkq_cust as b where a.cust_id = b.cust_id and order_time>='".$sdt."' and order_time <= '".$edt."' order by id";
+			$list = $obj->query($sql);
+			$member = $obj->query("select tbid,name from tb_member ");
+			for($i = 0;$i<count($list);$i++){			
+				foreach( $member as $mem ){		
+					if($list[$i]["doctor_id"] == $mem["tbid"] ){
+						$list[$i]["doctor_id"] = $mem["name"];
+					}
+					if($list[$i]["answer_id"] == $mem["tbid"]){
+						$list[$i]["answer_id"] = $mem["name"];
+					}
+					if($list[$i]["edit_id"] == $mem["tbid"]){
+						$list[$i]["edit_id"] = $mem["name"];
+					}
+				}
+			}
+			
+			
+			$title = array('预约号','病人姓名','预约时间','医生','预约类型','创建/处理人员','创建/处理时间','编辑人员','编辑时间','是否就诊','类型');
+			$filename = get_current_time();
+			exportexcel($data=$list, $title, $filename);
+			
+		}else{
+			$this->display ();
+		}
+		
 	}
 	public function order_tongji(){
 		$sdt = $_REQUEST ['sdt'];
 		$edt = $_REQUEST ['edt'];
 		$obj = new Model();
-		$sql = "select a.*,b.cust_name from blkq_order as a,blkq_cust as b where a.cust_id = b.cust_id and order_time>='".$sdt."' and order_time <= '".$edt."' order by id";
+		$sql = "select a.*,b.cust_name,a.id as idd from blkq_order as a,blkq_cust as b where a.cust_id = b.cust_id and order_time>='".$sdt."' and order_time <= '".$edt."' order by a.id";
 		$list = $obj->query($sql);
 		$member = $obj->query("select tbid,name from tb_member ");
 		for($i = 0;$i<count($list);$i++){			
@@ -116,6 +149,9 @@ public function statistics(){
 				}
 				if($list[$i]["answer_id"] == $mem["tbid"]){
 					$list[$i]["answer_name"] = $mem["name"];
+				}
+				if($list[$i]["edit_id"] == $mem["tbid"]){
+					$list[$i]["edit_name"] = $mem["name"];
 				}
 			}
 		}
@@ -258,11 +294,17 @@ public function statistics(){
 
 				/* do send weixin to admin */
 				$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n";
+				
 				//给所有助手发送消息
 				$sql = "select weixin_id,mail,tbid from tb_member where permission_id =2 ";
 				$list = M("tb_member")->query($sql);				
 				foreach($list as $map){
-					send_weixin($map['weixin_id'], urlencode($weixin_content."<a href='http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok."'>点击处理 </a>"));							
+					//send_weixin($map['weixin_id'], urlencode($weixin_content."<a href='http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok."'>点击处理 </a>"));							
+					//send_weixin($map['weixin_id'], urlencode($weixin_content." http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok));							
+					$url = "http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok;
+					sendWechatTempMsg($map['weixin_id'], urlencode($url), urlencode(date ( "Y-m-d_H:i:s" )), urlencode($data['yuyue_type']));
+					
+					/*send mail*/
 					send_email($map['mail'], '有人预约', $content);
 					//send_email("342834599@qq.com", '有人预约', $content);
 				}	

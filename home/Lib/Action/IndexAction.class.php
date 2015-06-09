@@ -99,20 +99,20 @@ class IndexAction extends Action
 
 	}
 
-public function statistics(){
+	public function statistics(){
 		$tag = $_REQUEST['tag'];
-		
-		
+
+
 		if($tag == 'export'){
-		
+
 			$sdt = $_REQUEST ['sdt'];
 			$edt = $_REQUEST ['edt'];
 			$obj = new Model();
 			$sql = "select a.id,b.cust_name,a.order_time,a.doctor_id,yuyue_type,answer_id,answer_time,edit_id,edit_time,iscome,comefrom from blkq_order as a,blkq_cust as b where a.cust_id = b.cust_id and order_time>='".$sdt."' and order_time <= '".$edt."' order by id";
 			$list = $obj->query($sql);
 			$member = $obj->query("select tbid,name from tb_member ");
-			for($i = 0;$i<count($list);$i++){			
-				foreach( $member as $mem ){		
+			for($i = 0;$i<count($list);$i++){
+				foreach( $member as $mem ){
 					if($list[$i]["doctor_id"] == $mem["tbid"] ){
 						$list[$i]["doctor_id"] = $mem["name"];
 					}
@@ -124,16 +124,16 @@ public function statistics(){
 					}
 				}
 			}
-			
-			
+
+
 			$title = array('预约号','病人姓名','预约时间','医生','预约类型','创建/处理人员','创建/处理时间','编辑人员','编辑时间','是否就诊','类型');
 			$filename = get_current_time();
 			exportexcel($data=$list, $title, $filename);
-			
+
 		}else{
 			$this->display ();
 		}
-		
+
 	}
 	public function order_tongji(){
 		$sdt = $_REQUEST ['sdt'];
@@ -142,8 +142,8 @@ public function statistics(){
 		$sql = "select a.*,b.cust_name,a.id as idd from blkq_order as a,blkq_cust as b where a.cust_id = b.cust_id and order_time>='".$sdt."' and order_time <= '".$edt."' order by a.id";
 		$list = $obj->query($sql);
 		$member = $obj->query("select tbid,name from tb_member ");
-		for($i = 0;$i<count($list);$i++){			
-			foreach( $member as $mem ){		
+		for($i = 0;$i<count($list);$i++){
+			foreach( $member as $mem ){
 				if($list[$i]["doctor_id"] == $mem["tbid"] ){
 					$list[$i]["doctor_name"] = $mem["name"];
 				}
@@ -155,11 +155,11 @@ public function statistics(){
 				}
 			}
 		}
-		
-		
-		
-		$this->ajaxReturn($list);	
-		
+
+
+
+		$this->ajaxReturn($list);
+
 	}
 
 
@@ -232,34 +232,16 @@ public function statistics(){
 		$tag = $_REQUEST ['tag'];
 		if ($tag)
 		{
+			/**
+			 *提交预约的逻辑
+			 */
+
+			/*获取预约信息*/
 			$data ['tel'] = I ( 'param.tel' );
 			$data ['name'] = I ( 'param.name' );
 			$data ['age'] = I ( 'param.age' );
 			$data ['sex'] = I ( 'param.sex' );
-			
-			//根据id获取用户信息
-			$sql = "select * from blkq_cust where cust_tel = " . $data ['tel'];
-			$list = M ( "Cust" )->query($sql);
-			if(count($list)>0){
-				//已经存在
-				$data['cust_id'] = $list[0]['cust_id'];
-			}else{
-				//需要插入,新增这条数据
-				$insert = "insert into blkq_cust (cust_name,age,cust_tel,cust_sex) values ('".$data ['name']."','".$data ['age']."','".$data ['tel']."','".$data ['sex']."')";			
-				$mod = new Model() ;
-				$mod->query($insert);
-				
-				$query = "select cust_id from blkq_cust where cust_tel =" . $data ['tel'];
-				$ll = $mod->query($query);
-				$data['cust_id'] = $ll[0]['cust_id'];
-				
-			}
-			
-			
-			
-			
 			$data ['order_time'] = I ( 'param.order_time' );
-
 			/* alter time2 */
 			$time2 = I ( 'param.order_time2' );
 			if ($time2==1){
@@ -273,8 +255,6 @@ public function statistics(){
 				/* add dottime*/
 				$data['dottime'] = '16,39';
 			}
-
-
 			$data ['desc'] = I ( 'param.desc' );
 			$data ['ip'] = get_current_ip ();
 			$data ['createtime'] = get_current_time ();
@@ -282,36 +262,69 @@ public function statistics(){
 			$data['doctor_id'] = I('param.doctor_id');
 			$data['doctor_name'] = I('param.doctor_name');
 			$data['comefrom'] = "w";
-			// dump($data);
-			$ok = M ( "Order" )->add ( $data );
-			//dump($ok);
-			if ($ok)
-			{
-				// success
-				$this->success ( "您的预约号是：" . $ok .'    ,我们将会尽快安排助手联系您。'   ,'index');
-				$content=$data ['name']."-".$data ['sex'].'在网站上进行了预约。预约时间是：  '.$data ['order_time'].' '.$data ['order_time2'].'。  预约号：'.$ok.'   预约的联系方式是：'.$data ['tel'].'   症状描述是：'.$data ['desc'];
-				
 
-				/* do send weixin to admin */
-				$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n";
-				
-				//给所有助手发送消息
-				$sql = "select weixin_id,mail,tbid from tb_member where permission_id =2 ";
-				$list = M("tb_member")->query($sql);				
-				foreach($list as $map){
-					//send_weixin($map['weixin_id'], urlencode($weixin_content."<a href='http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok."'>点击处理 </a>"));							
-					//send_weixin($map['weixin_id'], urlencode($weixin_content." http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok));							
-					$url = "http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok;
-					sendWechatTempMsg($map['weixin_id'], urlencode($url), urlencode(date ( "Y-m-d_H:i:s" )), urlencode($data['yuyue_type']));
-					
-					/*send mail*/
-					send_email($map['mail'], '有人预约', $content);
-					//send_email("342834599@qq.com", '有人预约', $content);
-				}	
-					
-			} else
-			{
-				$this->error ( "预约失败~~" );
+			/**
+			 * 判断
+			 * 0. 患者预约正确，但是不确定是否预约成功，多点击了一次
+			 * 1. 有人恶搞，多次预约
+			 * 2. 患者预约错误，需要重新预约
+			 *
+			 * 通过时间createtime和ip判断，5分钟之内不能重复提交
+			 */
+			$temp_list = M('order')->where("ip='".$data ['ip']."'")->order('createtime desc')->limit(1)->find();
+			$now_time = get_current_time();
+			//echo strtotime($now_time)-strtotime($temp_list['createtime']);
+			if (count($temp_list)!=0 && $temp_list!=null && strtotime($now_time)-strtotime($temp_list['createtime'])<5*60) {
+				/*有该患者的的时候，找到最近的一条记录*/
+				$this->error ( "提示:系统检测到您在近期已经提交预约，请耐心等待助手的联系，<br>如预约错误请五分钟后再重新预约，谢谢您的支持。" );;
+			}
+			else {
+
+				/**
+				 * 患者第一次登陆系统预约，会将患者的信息保存起来，以便形成病例表
+				 */
+				//根据id获取用户信息
+				$sql = "select * from blkq_cust where cust_tel = " . $data ['tel'];
+				$list = M ( "Cust" )->query($sql);
+				if(count($list)>0){
+					//已经存在
+					$data['cust_id'] = $list[0]['cust_id'];
+				}else{
+					//需要插入,新增这条数据
+					$insert = "insert into blkq_cust (cust_name,age,cust_tel,cust_sex) values ('".$data ['name']."','".$data ['age']."','".$data ['tel']."','".$data ['sex']."')";
+					$mod = new Model() ;
+					$mod->query($insert);
+
+					$query = "select cust_id from blkq_cust where cust_tel =" . $data ['tel'];
+					$ll = $mod->query($query);
+					$data['cust_id'] = $ll[0]['cust_id'];
+				}
+
+				// dump($data);
+				$ok = M ( "Order" )->add ( $data );
+				//dump($ok);
+				if ($ok)
+				{
+					// success
+					$this->success ( "您的预约号是：" . $ok .'    ,我们将会尽快安排助手联系您。'   ,'index');
+					$content=$data ['name']."-".$data ['sex'].'在网站上进行了预约。预约时间是：  '.$data ['order_time'].' '.$data ['order_time2'].'。  预约号：'.$ok.'   预约的联系方式是：'.$data ['tel'].'   症状描述是：'.$data ['desc'];
+					/* do send weixin to admin */
+					$weixin_content="【网站有人预约】\n\n预约号：".$ok."\n患者姓名：".$data['name']."\n预约时间：".$data ['order_time']."-".$data ['order_time2']."\n联系方式：".$data ['tel']."\n症状描述：".$data ['desc']."\n\n";
+
+					//给所有助手发送消息
+					$sql = "select weixin_id,mail,tbid from tb_member where permission_id =2 ";
+					$list = M("tb_member")->query($sql);
+					foreach($list as $map){
+						//send wechat to all admin
+						$url = "http://www.blkqyy.com/admin.php/message/weixin_yuyue.html?sid=".$map["tbid"]."&id=".$ok;
+						sendWechatTempMsg($map['weixin_id'], urlencode($url), urlencode(date ( "Y-m-d_H:i:s" )), urlencode($data['yuyue_type']));
+						/*send mail to all admin */
+						send_email($map['mail'], '有人预约', $content);
+					}
+				} else
+				{
+					$this->error ( "预约失败~~" );
+				}
 			}
 		} else
 		{
@@ -329,7 +342,6 @@ public function statistics(){
 				$this->assign('info',$info);
 				$this->display ();
 			}
-
 		}
 
 	}
@@ -422,29 +434,29 @@ public function statistics(){
 		$this->assign('info',$info);
 		$this->display();
 	}
-	
+
 	public function get_zbap_data(){
 		$year = $_REQUEST ['year'];
 		$month = $_REQUEST['month'];
 		$obj = M ( 'zbap' );
-		$sql = "select name,tbid from tb_member where  permission_id = 1";					
+		$sql = "select name,tbid from tb_member where  permission_id = 1";
 		$list = $obj->query($sql);
 		$day = ($month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31));
 		$time1 = strtotime($year."-".$month."-01");
 		$time2 = strtotime("2015-01-01");
-		$days = ceil(($time1-$time2)/86400) - 1;	
+		$days = ceil(($time1-$time2)/86400) - 1;
 		for($i=0; $i< count($list);$i++){
 			//获取每个医生的值班信息
 			$sql1 = "select * from blkq_duty where mem_id = ".$list[$i]['tbid'] ." and days >= ".$days ." and days <" . ($days+$day);
 			$list1 = $obj->query($sql1);
-			if($list1 != null){				
+			if($list1 != null){
 				foreach ($list1 as $two){
-					$add = 	$two['days'];				
+					$add = 	$two['days'];
 					$list[$i][$add] = $two["moring"];
 				}
-			}			
-		}			
-		$this->ajaxReturn($list);	
+			}
+		}
+		$this->ajaxReturn($list);
 	}
 	//执行更新或者插入操作
 	public function updata_zbap_data(){
@@ -462,19 +474,19 @@ public function statistics(){
 			//执行插
 			$insert = "insert into blkq_duty (days,mem_id,moring,afternoon) values (".$id.",".$name.",".$duty.",".$duty.")";
 			$obj->query($insert);
-			
+
 		}else{
 			$update = "update blkq_duty set moring = ". $duty .", afternoon = ". $duty ." where days = ".$id." and mem_id = ".$name;
 			$obj->query($update);
-		}		
+		}
 	}
 	public function get_one_zbap(){
 		$stid = $_REQUEST ['stid'];
 		$start = $_REQUEST['start'];
 		$end = $_REQUEST['end'];
 		$obj = M ( 'zbap' );
-		$sql = "select * from blkq_duty where mem_id = ".$stid . " and days>= ".$start . " and days< " . $end;					
-		$list = $obj->query($sql);		
+		$sql = "select * from blkq_duty where mem_id = ".$stid . " and days>= ".$start . " and days< " . $end;
+		$list = $obj->query($sql);
 		$this->ajaxReturn($list);
 	}
 	public function updata_one_zbap(){
@@ -487,7 +499,7 @@ public function statistics(){
 		$stid = $_REQUEST['stid'];
 		$obj = M ( 'zbap' );
 		$selcet = "select * from blkq_duty where days = " .$days . " and mem_id = " . $stid;
-		$list = $obj->query($selcet);	
+		$list = $obj->query($selcet);
 		if($list == null){
 			//插入
 			$insert = "insert into blkq_duty (days,mem_id,".$type.") values (".$days.",".$stid.",1)";
